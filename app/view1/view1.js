@@ -9,6 +9,27 @@ angular.module('myApp.view1', ['ngRoute'])
   });
 }])
 
-.controller('View1Ctrl', [function() {
-
+.controller('View1Ctrl', [function($scope) {
+      $scope.tilesRows = [
+        {
+          tiles: [
+            {
+              typeId: 1
+            },
+            {
+              typeId: 2
+            }
+          ]
+        },
+        {
+          tiles: [
+            {
+              typeId: 3
+            },
+            {
+              typeId: 4
+            }
+          ]
+        }
+      ];
 }]);
