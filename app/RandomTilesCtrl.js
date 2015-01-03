@@ -16,17 +16,71 @@ angular.module('randomTiles', [])
           };
           for (var column = 0; column < columns; column++) {
             $scope.tilesRows[row].tiles[column] = {
-              typeId: randomTileTypeId()
+              typeId: randomTileTypeIdFor(row, column)
             }
           }
         }
       };
 
-      function randomTileTypeId() {
-        var family = $scope.tilesFamilies[randomNumberFrom(1).to($scope.tilesFamilies.length) - 1];
-        var group = family.groups[randomNumberFrom(1).to(family.groups.length) - 1];
-        return typeIdFrom(family.name, group.type);
+      function randomTileTypeIdFor(row, column) {
+        var accumulation = accumulateFamiliesInNeighbourhoodOf(row, column);
+        var options = optionsFor(accumulation);
+        console.log("options for (" + row + "," + column + ") are " + options);
+        var luckyIndex = randomNumberFrom(1).to(options.length) - 1;
+        var familyName = options[luckyIndex];
+        var type = 1;
+        return typeIdFrom(familyName, type);
+      }
 
+      function optionsFor(accumulation) {
+        var maxNumber = 20;
+        var options = [];
+        $scope.tilesFamilies.forEach(function (family) {
+          var previousOccurrences = accumulation[family.name];
+          for (var index = 1; index <= (maxNumber - previousOccurrences); index++) {
+            options.push(family .name);
+          }
+        });
+        return options;
+      }
+
+      function accumulateFamiliesInNeighbourhoodOf(anchorRow, anchorColumn) {
+        var result = {};
+        allTypeIds().forEach(function (typeId) {
+          result[typeId.familyName] = 0;
+        });
+        updateResult(result, anchorRow, anchorColumn, 6, 1);
+        updateResult(result, anchorRow, anchorColumn, 2, 999);
+        return result;
+      }
+
+      function updateResult(result, anchorRow, anchorColumn, distance, weight) {
+        for (var row = anchorRow - distance; row <= anchorRow + distance; row++) {
+          for (var column = anchorColumn - distance; column <= anchorColumn + distance; column++) {
+            if (row >=0
+                && column >= 0
+                && (row != anchorRow || column != anchorColumn)
+                && (typeof $scope.tilesRows[row] !== 'undefined')
+                && (typeof $scope.tilesRows[row].tiles[column] !== 'undefined')) {
+              var typeId = typeIdIn(row, column);
+              result[typeId.familyName] = result[typeId.familyName] + weight;
+            }
+          }
+        }
+      }
+
+      function allTypeIds() {
+        var result = [];
+        $scope.tilesFamilies.forEach(function(family) {
+          family.groups.forEach(function (group) {
+            result.push(typeIdFrom(family.name, group.type));
+          });
+        });
+        return result;
+      }
+
+      function typeIdIn(row, column) {
+        return $scope.tilesRows[row].tiles[column].typeId;
       }
 
       function randomNumberFrom(start) {
@@ -38,7 +92,10 @@ angular.module('randomTiles', [])
       }
 
       function typeIdFrom(familyName, type) {
-        return familyName + '-' + type;
+        return {
+          familyName: familyName,
+          type: type
+        };
       }
 
       function initTilesFamilies() {

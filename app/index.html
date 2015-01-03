@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>My AngularJS App</title>
+  <title>Random Tiles</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="bower_components/html5-boilerplate/css/normalize.css">
@@ -31,7 +31,7 @@
     <table>
       <tr ng-repeat="tilesRow in tilesRows">
         <td class="tile" ng-repeat="tile in tilesRow.tiles">
-          <img src="assets/{{tile.typeId}}.jpg"/>
+          <img src="assets/{{tile.typeId.familyName}}-{{tile.typeId.type}}.jpg"/>
         </td>
       </tr>
     </table>
