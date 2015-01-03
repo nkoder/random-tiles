@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('randomTiles', [])
-.controller('RandomTilesCtrl', ['$scope', function($scope) {
+.controller('RandomTilesCtrl', ['$scope', '$window', function($scope, $window) {
 
       var LONG_DISTANCE = 8;
       var SHORT_DISTANCE = 1;
@@ -28,17 +28,18 @@ angular.module('randomTiles', [])
             }
           }
         }
-        logTilesLeftReport();
+        reportLeftTiles();
       };
 
-      function logTilesLeftReport() {
-        console.log("Tiles left:");
+      function reportLeftTiles() {
+        var report = "";
+        report += ("Pozostałe płytki:\n");
         $scope.tilesFamilies.forEach(function(family) {
-          console.log("[" + family.name + "]");
           family.groups.forEach(function (group) {
-            console.log("  " + group.amount + " x " + family.name + "-"  + group.type);
+            report += group.amount + " x " + family.name + "-"  + group.type + "\n";
           });
         });
+        $window.alert(report);
       }
 
       function useTileOf(typeId) {
