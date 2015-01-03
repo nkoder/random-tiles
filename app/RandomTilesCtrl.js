@@ -42,37 +42,96 @@ angular.module('randomTiles', [])
       function initTilesFamilies() {
         $scope.tilesFamilies = [
           {
+            name: 'barcelona',
+            groups: [
+              { type: 1, amount: 5},
+              { type: 2, amount: 8}
+            ]
+          },
+          {
             name: 'celowniki',
             groups: [
-              {
-                type: 1,
-                amount: 5
-              },
-              {
-                type: 2,
-                amount: 6
-              }
+              { type: 1, amount: 5},
+              { type: 2, amount: 6}
+            ]
+          },
+          {
+            name: 'kawa',
+            groups: [
+              { type: 1, amount: 5},
+              { type: 2, amount: 4},
+              { type: 3, amount: 5}
+            ]
+          },
+          {
+            name: 'kleks',
+            groups: [
+              { type: 1, amount: 2},
+              { type: 2, amount: 3},
+              { type: 3, amount: 6}
             ]
           },
           {
             name: 'kolibry',
             groups: [
-              {
-                type: 1,
-                amount: 5
-              },
-              {
-                type: 2,
-                amount: 5
-              },
-              {
-                type: 3,
-                amount: 5
-              },
-              {
-                type: 4,
-                amount: 8
-              }
+              { type: 1, amount: 5},
+              { type: 2, amount: 5},
+              { type: 3, amount: 5},
+              { type: 4, amount: 8}
+            ]
+          },
+          {
+            name: 'kotki',
+            groups: [
+              { type: 1, amount: 5},
+              { type: 2, amount: 5},
+              { type: 3, amount: 3},
+              { type: 4, amount: 6}
+            ]
+          },
+          {
+            name: 'kwiatki',
+            groups: [
+              { type: 1, amount: 6},
+              { type: 2, amount: 6},
+              { type: 3, amount: 4}
+            ]
+          },
+          {
+            name: 'mandarynka',
+            groups: [
+              { type: 1, amount: 7},
+              { type: 2, amount: 6},
+              { type: 3, amount: 6}
+            ]
+          },
+          {
+            name: 'maziaje',
+            groups: [
+              { type: 1, amount: 25}
+            ]
+          },
+          {
+            name: 'paproc',
+            groups: [
+              { type: 1, amount: 8},
+              { type: 2, amount: 6},
+              { type: 3, amount: 6},
+              { type: 4, amount: 7}
+            ]
+          },
+          {
+            name: 'piksele',
+            groups: [
+              { type: 1, amount: 4},
+              { type: 2, amount: 5},
+              { type: 3, amount: 6}
+            ]
+          },
+          {
+            name: 'szachownica',
+            groups: [
+              { type: 1, amount: 6}
             ]
           }
         ];

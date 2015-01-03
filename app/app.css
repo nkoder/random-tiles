@@ -30,10 +30,13 @@
 }
 
 td.tile {
-  border: none;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #C1C2BD;
+  padding: 0;
 }
 
 .tile img {
-  width: 100px;
-  height: 100px;
+  width: 99px;
+  height: 99px;
 }
