@@ -20,7 +20,13 @@
 </head>
 <body ng-app="randomTiles">
 
-  <div ng-controller="RandomTilesCtrl" ng-init="init()">
+  <!--
+  szerokość łazienki = 171,0 cm     ==> roomWidth = 171
+  długość łazienki = 325,5 cm       ,
+  grubość drzwi = 16,0 cm           | ==> roomHeight = 467.5
+  szerokość przedpokoju = 126,0 cm  '
+  -->
+  <div ng-controller="RandomTilesCtrl" ng-init="generateTilesArrangement(171, 467.5)">
     <table>
       <tr ng-repeat="tilesRow in tilesRows">
         <td class="tile" ng-repeat="tile in tilesRow.tiles">

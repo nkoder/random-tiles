@@ -2,9 +2,6 @@
 
 describe('RandomTiles', function() {
 
-  var ROWS_COUNT = 20;
-  var COLUMNS_COUNT = 10;
-
   var scope;
 
   beforeEach(module('randomTiles'));
@@ -16,17 +13,21 @@ describe('RandomTiles', function() {
     });
   }));
 
-  it('should provide tiles for ' + ROWS_COUNT + ' rows and ' + COLUMNS_COUNT + ' columns', function() {
-    scope.init();
+  it('should provide proper number tiles of 20x20 tiles for given room size', function() {
+    var roomWidth = 61;
+    var roomLength = 39;
+    scope.generateTilesArrangement(roomWidth, roomLength);
+    var expectedColumns = 4
+    var expectedRows = 2
 
-    for (var row = 0; row < ROWS_COUNT; row++) {
+    for (var row = 0; row < expectedRows; row++) {
       expect(tilesAtRow(row)).toBeDefined();
-      for (var column = 0; column < COLUMNS_COUNT; column++) {
+      for (var column = 0; column < expectedColumns; column++) {
         expect(tilesAtRow(row).tiles[column]).toBeDefined();
       }
-      expect(tilesAtRow(row).tiles[COLUMNS_COUNT]).not.toBeDefined();
+      expect(tilesAtRow(row).tiles[expectedColumns]).not.toBeDefined();
     }
-    expect(tilesAtRow(row)).not.toBeDefined();
+    expect(tilesAtRow(expectedRows)).not.toBeDefined();
   });
 
   function tilesAtRow(row) {

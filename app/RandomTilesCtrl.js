@@ -3,10 +3,12 @@
 angular.module('randomTiles', [])
 .controller('RandomTilesCtrl', ['$scope', function($scope) {
 
-      $scope.init = function () {
+      var tileSize = 20;
+
+      $scope.generateTilesArrangement = function (roomWidth, roomLength) {
         initTilesFamilies();
-        var rows = 20;
-        var columns = 10;
+        var rows = Math.ceil(roomLength / tileSize);
+        var columns = Math.ceil(roomWidth / tileSize);
         $scope.tilesRows = [];
         for (var row = 0; row < rows; row++) {
           $scope.tilesRows[row] = {
