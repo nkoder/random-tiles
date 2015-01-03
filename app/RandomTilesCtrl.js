@@ -7,17 +7,16 @@ angular.module('randomTiles', [])
         var rows = 10;
         var columns = 20;
         $scope.tilesRows = [];
-        for (var row = 0; row <= rows; row++) {
+        for (var row = 0; row < rows; row++) {
           $scope.tilesRows[row] = {
             tiles: []
           };
-          for (var column = 0; column <= columns; column++) {
+          for (var column = 0; column < columns; column++) {
             $scope.tilesRows[row].tiles[column] = {
               typeId: randomNumberFrom(1).to(10)
             }
           }
         }
-        console.log($scope.tilesRows);
       };
 
       function randomNumberFrom(start) {

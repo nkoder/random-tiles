@@ -2,41 +2,19 @@
 
 /* https://github.com/angular/protractor/blob/master/docs/toc.md */
 
-describe('my app', function() {
+describe('randomTiles', function() {
 
-  browser.get('index.html');
+  var ROWS_COUNT = 10;
+  var COLUMNS_COUNT = 20;
 
-  it('should automatically redirect to /view1 when location hash/fragment is empty', function() {
-    expect(browser.getLocationAbsUrl()).toMatch("/view1");
+  beforeEach(function() {
+    browser.get('index.html');
   });
 
-
-  describe('view1', function() {
-
-    beforeEach(function() {
-      browser.get('index.html#/view1');
+  it('should render proper number of table cells with .tile class', function() {
+    element.all(by.css('td.tile')).then(function (items) {
+      expect(items.length).toBe(ROWS_COUNT * COLUMNS_COUNT);
     });
-
-
-    it('should render view1 when user navigates to /view1', function() {
-      expect(element.all(by.css('[ng-view] p')).first().getText()).
-        toMatch(/partial for view 1/);
-    });
-
   });
 
-
-  describe('view2', function() {
-
-    beforeEach(function() {
-      browser.get('index.html#/view2');
-    });
-
-
-    it('should render view2 when user navigates to /view2', function() {
-      expect(element.all(by.css('[ng-view] p')).first().getText()).
-        toMatch(/partial for view 2/);
-    });
-
-  });
 });
