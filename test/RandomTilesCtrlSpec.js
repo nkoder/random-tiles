@@ -2,8 +2,8 @@
 
 describe('RandomTiles', function() {
 
-  var ROWS_COUNT = 10;
-  var COLUMNS_COUNT = 20;
+  var ROWS_COUNT = 20;
+  var COLUMNS_COUNT = 10;
 
   var scope;
 
