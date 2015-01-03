@@ -3,6 +3,10 @@
 angular.module('randomTiles', [])
 .controller('RandomTilesCtrl', ['$scope', function($scope) {
 
+      var LONG_DISTANCE = 8;
+      var SHORT_DISTANCE = 1;
+      var MAX_CHANCE = 12;
+
       var tileSize = 20;
 
       $scope.generateTilesArrangement = function (roomWidth, roomLength) {
@@ -15,16 +19,56 @@ angular.module('randomTiles', [])
             tiles: []
           };
           for (var column = 0; column < columns; column++) {
+            var typeId = randomTileTypeIdFor(row, column);
             $scope.tilesRows[row].tiles[column] = {
-              typeId: randomTileTypeIdFor(row, column)
+              typeId: typeId
+            };
+            if (typeId.familyName != "error") {
+              useTileOf(typeId);
             }
           }
         }
+        logTilesLeftReport();
       };
+
+      function logTilesLeftReport() {
+        console.log("Tiles left:");
+        $scope.tilesFamilies.forEach(function(family) {
+          console.log("[" + family.name + "]");
+          family.groups.forEach(function (group) {
+            console.log("  " + group.amount + " x " + family.name + "-"  + group.type);
+          });
+        });
+      }
+
+      function useTileOf(typeId) {
+        var family = familyWithName(typeId.familyName);
+        var group = groupOfType(typeId.type, family);
+        group.amount--;
+        if (group.amount <= 0) {
+          removeGroup(family, typeId.type);
+        }
+      }
+
+      function removeGroup(family, type) {
+        var indexToRemove = -1;
+        for (var index = 0; index < family.groups.length; index++) {
+          if (family.groups[index].type === type) {
+            indexToRemove = index;
+          }
+        }
+        family.groups = family.groups.slice(0, indexToRemove).concat(family.groups.slice(indexToRemove + 1));
+      }
 
       function randomTileTypeIdFor(row, column) {
         var accumulation = accumulateFamiliesInNeighbourhoodOf(row, column);
         var options = optionsFor(accumulation);
+        if (options.length === 0) {
+          return {
+            familyName: "error",
+            type: "error"
+          };
+        }
         var luckyIndex = randomNumberFrom(0).to(options.length-1);
         var familyName = options[luckyIndex];
         var family = familyWithName(familyName);
@@ -34,11 +78,13 @@ angular.module('randomTiles', [])
       }
 
       function optionsFor(accumulation) {
-        var maxNumber = 20;
         var options = [];
         $scope.tilesFamilies.forEach(function (family) {
           var previousOccurrences = accumulation[family.name];
-          for (var index = 1; index <= (maxNumber - previousOccurrences); index++) {
+          var maxIndex = MAX_CHANCE < previousOccurrences
+              ? 0
+              : (MAX_CHANCE - previousOccurrences) * (MAX_CHANCE - previousOccurrences);
+            for (var index = 1; index <= maxIndex; index++) {
             options.push(family .name);
           }
         });
@@ -50,8 +96,8 @@ angular.module('randomTiles', [])
         allTypeIds().forEach(function (typeId) {
           result[typeId.familyName] = 0;
         });
-        updateResult(result, anchorRow, anchorColumn, 6, 1);
-        updateResult(result, anchorRow, anchorColumn, 2, 999);
+        updateResult(result, anchorRow, anchorColumn, LONG_DISTANCE, 1);
+        updateResult(result, anchorRow, anchorColumn, SHORT_DISTANCE, 999);
         return result;
       }
 
@@ -103,6 +149,14 @@ angular.module('randomTiles', [])
         for (var index = 0; index < $scope.tilesFamilies.length; index++) {
           if ($scope.tilesFamilies[index].name === familyName) {
             return $scope.tilesFamilies[index];
+          }
+        }
+      }
+
+      function groupOfType(type, family) {
+        for (var index = 0; index < family.groups.length; index++) {
+          if (family.groups[index].type === type) {
+            return family.groups[index];
           }
         }
       }
