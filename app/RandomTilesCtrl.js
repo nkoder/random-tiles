@@ -3,14 +3,21 @@
 angular.module('randomTiles', [])
 .controller('RandomTilesCtrl', ['$scope', '$window', function($scope, $window) {
 
-      var LONG_DISTANCE = 8;
-      var SHORT_DISTANCE = 1;
-      var MAX_CHANCE = 12;
+      var LONG_DISTANCE = 6;
+      var SHORT_DISTANCE = 3;
+      var VERY_SHORT_DISTANCE = 1;
+      var LOW_WEIGHT = 1;
+      var HIGH_WEIGHT = 2;
+      var VERY_HIGH_WEIGHT = 99;
+      var MAX_CHANCE = 24;
 
       var tileSize = 20;
 
+      var errors;
+
       $scope.generateTilesArrangement = function (roomWidth, roomLength) {
         initTilesFamilies();
+        errors = 0;
         var rows = Math.ceil(roomLength / tileSize);
         var columns = Math.ceil(roomWidth / tileSize);
         $scope.tilesRows = [];
@@ -25,10 +32,16 @@ angular.module('randomTiles', [])
             };
             if (typeId.familyName != "error") {
               useTileOf(typeId);
+            } else {
+              errors++;
             }
           }
         }
-        reportLeftTiles();
+        if (errors > 0) {
+          $window.alert("Nie udało się ułożyć płytek.\n Liczba pustych pozycji: " + errors);
+        } else {
+          reportLeftTiles();
+        }
       };
 
       function reportLeftTiles() {
@@ -97,8 +110,9 @@ angular.module('randomTiles', [])
         allTypeIds().forEach(function (typeId) {
           result[typeId.familyName] = 0;
         });
-        updateResult(result, anchorRow, anchorColumn, LONG_DISTANCE, 1);
-        updateResult(result, anchorRow, anchorColumn, SHORT_DISTANCE, 999);
+        updateResult(result, anchorRow, anchorColumn, LONG_DISTANCE, LOW_WEIGHT);
+        updateResult(result, anchorRow, anchorColumn, SHORT_DISTANCE, HIGH_WEIGHT);
+        updateResult(result, anchorRow, anchorColumn, VERY_SHORT_DISTANCE, VERY_HIGH_WEIGHT);
         return result;
       }
 
