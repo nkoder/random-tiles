@@ -25,10 +25,11 @@ angular.module('randomTiles', [])
       function randomTileTypeIdFor(row, column) {
         var accumulation = accumulateFamiliesInNeighbourhoodOf(row, column);
         var options = optionsFor(accumulation);
-        console.log("options for (" + row + "," + column + ") are " + options);
-        var luckyIndex = randomNumberFrom(1).to(options.length) - 1;
+        var luckyIndex = randomNumberFrom(0).to(options.length-1);
         var familyName = options[luckyIndex];
-        var type = 1;
+        var family = familyWithName(familyName);
+        var luckyTypeIndex = randomNumberFrom(0).to(family.groups.length-1);
+        var type = family.groups[luckyTypeIndex].type;
         return typeIdFrom(familyName, type);
       }
 
@@ -83,10 +84,10 @@ angular.module('randomTiles', [])
         return $scope.tilesRows[row].tiles[column].typeId;
       }
 
-      function randomNumberFrom(start) {
+      function randomNumberFrom(min) {
         return {
-          to: function(end) {
-            return Math.floor((Math.random() * end) + start)
+          to: function(max) {
+            return Math.floor((Math.random() * (max - min + 1)) + min)
           }
         }
       }
@@ -96,6 +97,14 @@ angular.module('randomTiles', [])
           familyName: familyName,
           type: type
         };
+      }
+
+      function familyWithName(familyName) {
+        for (var index = 0; index < $scope.tilesFamilies.length; index++) {
+          if ($scope.tilesFamilies[index].name === familyName) {
+            return $scope.tilesFamilies[index];
+          }
+        }
       }
 
       function initTilesFamilies() {
