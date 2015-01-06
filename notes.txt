@@ -1,0 +1,6 @@
+szerokość łazienki = 171,0 cm     ==> roomWidth = 171
+
+szerokość brodzika = 80,0 cm      ,
+długość łazienki = 325,5 cm       |
+grubość drzwi = 16,0 cm           | ==> roomHeight = -80+325.5+16+126 = 387.5
+szerokość przedpokoju = 126,0 cm  '
