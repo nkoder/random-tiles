@@ -1,0 +1,4 @@
+language: node_js
+node_js:
+  - "0.10"
+# `script` section is not needed because `npm install` and 'npm test` will be executed by default
