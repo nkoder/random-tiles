@@ -9,25 +9,25 @@ describe('TilesArrangementController', function () {
         $controller = _$controller_;
     }));
 
-    it("should know that no tiles arrangement was generated", function () {
+    it("should not generate on init", function () {
         // given:
         var scope = scopeAttachedToController();
 
         // when:
 
         // then:
-        expect(scope.wasArrangementGenerated()).toBe(false);
+        expect(scope.arrangement).not.toBeDefined();
     });
 
-    it("should know that tiles arrangement was generated", function () {
+    it("should generate next arrangement when asked to", function () {
         // given:
         var scope = scopeAttachedToController();
 
         // when:
-        scope.generateArrangement();
+        scope.generateNextArrangement();
 
         // then:
-        expect(scope.wasArrangementGenerated()).toBe(true);
+        expect(scope.arrangement).toBeDefined();
     });
 
     function scopeAttachedToController() {

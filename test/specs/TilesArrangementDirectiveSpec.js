@@ -16,7 +16,8 @@ describe('TilesArrangementDirective', function () {
         var element = compileDirective();
 
         // then:
-        expect(element.prop('tagName').toLowerCase()).toBe('canvas');
+        expect(element.prop("tagName").toLowerCase()).toBe("canvas");
+        expect(element.prop("id")).toBe("arrangement");
     });
 
     function compileDirective() {
