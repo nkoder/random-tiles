@@ -11,10 +11,9 @@ module.exports = function (config) {
 
         files: [
             libPath + 'angular.js',
-            libPath + 'angular.js',
             testLibPath + 'angular-mocks.js',
-            srcPath + 'RandomTiles.js',
-            testSrcPath + 'RandomTilesSpec.js'
+            srcPath + '*.js',
+            testSrcPath + '*.js'
         ],
 
         singleRun: true,

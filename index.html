@@ -4,9 +4,16 @@
   <meta charset="utf-8">
   <title>Random Tiles</title>
   <script type="text/javascript"  src="app/lib/angular.js"></script>
-  <script type="text/javascript"  src="app/RandomTiles.js"></script>
+  <script type="text/javascript"  src="app/TilesArrangement.js"></script>
+  <script type="text/javascript"  src="app/TilesArrangementController.js"></script>
+  <script type="text/javascript"  src="app/TilesArrangementDirective.js"></script>
 </head>
 <body ng-app="randomTiles" ng-strict-di>
-  <tiles-arrangement phrase="clean and test-driven"></tiles-arrangement>
+
+  <div ng-controller="TilesArrangementController">
+    <button id="generate-arrangement" ng-click="generateArrangement()">Generate!</button>
+    <tiles-arrangement ng-if="wasArrangementGenerated()"></tiles-arrangement>
+  </div>
+
 </body>
 </html>
