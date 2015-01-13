@@ -1,9 +1,10 @@
-var randomTiles = angular.module('randomTiles');
+angular
+    .module('randomTiles')
+    .controller('TilesArrangementController', function ($scope, ArrangementGenerator) {
 
-randomTiles.controller('TilesArrangementController', ['$scope', function ($scope) {
+        $scope.generateNextArrangement = function (tileWidth, tileHeight, groutWidth, rows, columns) {
+            $scope.arrangement = ArrangementGenerator
+                .newArrangementFor(tileWidth, tileHeight, groutWidth, rows, columns);
+        };
 
-    $scope.generateNextArrangement = function (tileWidth, tileHeight, rows, columns) {
-        $scope.arrangement = new Arrangement(tileWidth, tileHeight, rows, columns);
-    };
-
-}]);
+    });

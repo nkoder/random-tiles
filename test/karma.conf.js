@@ -13,6 +13,7 @@ module.exports = function (config) {
             libPath + 'angular.js',
             libPath + 'dist/lodash.compat.js',
             testLibPath + 'angular-mocks.js',
+            srcPath + 'TilesArrangement.js',
             srcPath + '*.js',
             testSrcPath + '*.js'
         ],

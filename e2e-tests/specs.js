@@ -15,8 +15,9 @@ describe('random-tiles', function() {
 
   it("should generate arrangement", function() {
     // given:
-    const tileWidth = 100;
-    const tileHeight = 100;
+    const tileWidth = 98;
+    const tileHeight = 98;
+    const groutWidth = 2;
     const rows = 15;
     const columns = 10;
 
@@ -26,8 +27,8 @@ describe('random-tiles', function() {
     // then:
     var arrangement = element(by.id('arrangement'));
     expect(arrangement.getTagName()).toEqual("canvas");
-    expect(arrangement.getAttribute("width")).toEqual((columns * tileWidth).toString());
-    expect(arrangement.getAttribute("height")).toEqual((rows * tileHeight).toString());
+    expect(arrangement.getAttribute("width")).toEqual((columns * (tileWidth + groutWidth)).toString());
+    expect(arrangement.getAttribute("height")).toEqual((rows * (tileHeight  +groutWidth)).toString());
   });
 
 });
