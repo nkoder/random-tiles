@@ -36,6 +36,20 @@ angular
             var width = tileSize.width;
             var height = tileSize.height;
             context2d().drawImage(tileImage, scaled(x), scaled(y), scaled(width), scaled(height));
+            drawTileLabel(tile.name, x + 2, y + 2);
+        }
+
+        function drawTileLabel(labelText, x, y) {
+            context2d().font = "16px Arial";
+            context2d().textBaseline = "top";
+            const textXOffset = 2;
+            const width = context2d().measureText(labelText).width + textXOffset;
+            const height = 16;
+            console.log(context2d().measureText(labelText));
+            context2d().fillStyle = "#FFFFFF";
+            context2d().fillRect(scaled(x), scaled(y), width, height);
+            context2d().fillStyle = "#000000";
+            context2d().fillText(labelText, scaled(x) + textXOffset, scaled(y));
         }
 
         function context2d() {
