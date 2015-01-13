@@ -14,10 +14,11 @@
 </head>
 <body ng-app="randomTiles">
 
-  <div ng-controller="TilesArrangementController">
+<div ng-controller="TilesArrangementController">
     <button id="generate-arrangement" ng-click="generateNextArrangement(198, 198, 2, 15, 10)">Generate!</button>
+    <input id="toggle-labels-visibility" type="checkbox" ng-model="shouldShowTilesLabels"/>
     <tiles-arrangement></tiles-arrangement>
-  </div>
+</div>
 
 </body>
 </html>

@@ -11,6 +11,7 @@ angular
             scope = _scope_;
             canvas = _element_[0];
             scope.$watch('arrangement', updateCanvas);
+            scope.$watch('shouldShowTilesLabels', updateCanvas);
         }
 
         function updateCanvas() {
@@ -36,7 +37,9 @@ angular
             var width = tileSize.width;
             var height = tileSize.height;
             context2d().drawImage(tileImage, scaled(x), scaled(y), scaled(width), scaled(height));
-            drawTileLabel(tile.name, x + 2, y + 2);
+            if (shouldShowTilesLabels()) {
+                drawTileLabel(tile.name, x + 2, y + 2);
+            }
         }
 
         function drawTileLabel(labelText, x, y) {
@@ -45,7 +48,6 @@ angular
             const textXOffset = 2;
             const width = context2d().measureText(labelText).width + textXOffset;
             const height = 16;
-            console.log(context2d().measureText(labelText));
             context2d().fillStyle = "#FFFFFF";
             context2d().fillRect(scaled(x), scaled(y), width, height);
             context2d().fillStyle = "#000000";
@@ -58,6 +60,10 @@ angular
 
         function scaled(dimension) {
             return dimension * scale;
+        }
+
+        function shouldShowTilesLabels() {
+            return scope.shouldShowTilesLabels;
         }
 
         return {

@@ -7,4 +7,6 @@ angular
                 .newArrangementFor(tileWidth, tileHeight, groutWidth, rows, columns);
         };
 
+        $scope.shouldShowTilesLabels = false;
+
     });

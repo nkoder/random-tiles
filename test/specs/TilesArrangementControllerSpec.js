@@ -2,6 +2,7 @@ describe('TilesArrangementController', function () {
 
     var $rootScope, $controller;
     var ArrangementGenerator;
+    var scope;
 
     beforeEach(module('randomTiles'));
 
@@ -11,9 +12,12 @@ describe('TilesArrangementController', function () {
         ArrangementGenerator = _ArrangementGenerator_;
     }));
 
+    beforeEach(function () {
+        createControllerWitchScopeAttached();
+    });
+
     it("should not generate arrangement on init", function () {
         // given:
-        var scope = scopeAttachedToController();
 
         // when:
 
@@ -28,11 +32,10 @@ describe('TilesArrangementController', function () {
         const tileWidth = 6;
         const tileHeight = 7;
         const groutWidth = 7;
-        var scope = scopeAttachedToController();
         spyOn(ArrangementGenerator, "newArrangementFor").and.returnValue("new arrangement");
 
         // when:
-        scope.generateNextArrangement(tileWidth, tileHeight, groutWidth, rows, columns);
+        generateNextArrangement(tileWidth, tileHeight, groutWidth, rows, columns);
 
         // then:
         expect(ArrangementGenerator.newArrangementFor)
@@ -40,12 +43,25 @@ describe('TilesArrangementController', function () {
         expect(scope.arrangement).toEqual("new arrangement");
     });
 
-    function scopeAttachedToController() {
-        var scope = $rootScope.$new();
+    it("should not show tiles' labels by default", function () {
+        // given:
+
+        // when:
+        generateNextArrangement();
+
+        // then:
+        expect(scope.shouldShowTilesLabels).toBe(false);
+    });
+
+    function createControllerWitchScopeAttached() {
+        scope = $rootScope.$new();
         $controller('TilesArrangementController', {
             $scope: scope
         });
-        return scope;
+    }
+
+    function generateNextArrangement(tileWidth, tileHeight, groutWidth, rows, columns) {
+        scope.generateNextArrangement(tileWidth || 10, tileHeight || 10, groutWidth || 1, rows || 2, columns || 3);
     }
 
 });

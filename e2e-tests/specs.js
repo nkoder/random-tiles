@@ -31,4 +31,16 @@ describe('random-tiles', function() {
     expect(arrangement.getAttribute("height")).toEqual((rows * (tileHeight  +groutWidth)).toString());
   });
 
+  it("should not fail when changing tiles' labels visibility", function () {
+    // given:
+    element(by.id('generate-arrangement')).click();
+
+    // when:
+    element(by.id('toggle-labels-visibility')).click();
+    element(by.id('toggle-labels-visibility')).click();
+    element(by.id('toggle-labels-visibility')).click();
+
+    // then:
+  });
+
 });

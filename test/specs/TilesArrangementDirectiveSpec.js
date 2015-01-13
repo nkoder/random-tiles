@@ -1,12 +1,13 @@
 describe('TilesArrangementDirective', function () {
 
-    var $compile, $rootScope;
+    var $compile;
+    var scope;
 
     beforeEach(module('randomTiles'));
 
     beforeEach(inject(function (_$compile_, _$rootScope_) {
         $compile = _$compile_;
-        $rootScope = _$rootScope_;
+        scope = _$rootScope_.$new();
     }));
 
     it("should be replaced by 'canvas' HTML element", function () {
@@ -21,8 +22,8 @@ describe('TilesArrangementDirective', function () {
     });
 
     function compileDirective() {
-        var element = $compile('<tiles-arrangement></tiles-arrangement>')($rootScope);
-        $rootScope.$digest();
+        var element = $compile('<tiles-arrangement></tiles-arrangement>')(scope);
+        scope.$digest();
         return element;
     }
 
