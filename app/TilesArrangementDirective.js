@@ -6,16 +6,44 @@ angular
 
         var scope;
         var canvas;
+        var arrangement;
+        var sourceRowToSwap, sourceColumnToSwap;
 
         function link(_scope_, _element_) {
             scope = _scope_;
+            _element_.on("click", toggleSwappingTiles);
             canvas = _element_[0];
             scope.$watch('arrangement', updateCanvas);
             scope.$watch('shouldShowTilesLabels', updateCanvas);
         }
 
+        function toggleSwappingTiles(event) {
+            var column = columnAt(unscaled(event.offsetX));
+            var row = rowAt(unscaled(event.offsetY));
+            if (!!scope.isSwappingTilesInProgress) {
+                stopSwappingTilesAt(row, column);
+            } else {
+                startSwappingTilesAt(row, column);
+            }
+        }
+
+        function startSwappingTilesAt(row, column) {
+            scope.isSwappingTilesInProgress = true;
+            sourceRowToSwap = row;
+            sourceColumnToSwap = column;
+            highlightTileAt(row, column);
+        }
+
+        function stopSwappingTilesAt(row, column) {
+            scope.isSwappingTilesInProgress = false;
+            arrangement.swapTileAt(sourceRowToSwap, sourceColumnToSwap).withTileAt(row, column);
+            sourceRowToSwap = undefined;
+            sourceColumnToSwap = undefined;
+            updateCanvas();
+        }
+
         function updateCanvas() {
-            var arrangement = scope.arrangement;
+            arrangement = scope.arrangement;
             if (arrangement) {
                 canvas.width = scaled(arrangement.size.width);
                 canvas.height = scaled(arrangement.size.height);
@@ -54,6 +82,20 @@ angular
             context2d().fillText(labelText, scaled(x) + textXOffset, scaled(y));
         }
 
+        function highlightTileAt(row, column) {
+            var lastAlpha = context2d().globalAlpha;
+            context2d().globalAlpha = 0.4;
+            context2d().fillStyle = "#999900";
+            var tileSize = arrangement.tileSize;
+            var groutWidth = arrangement.groutWidth;
+            var x = (tileSize.width + groutWidth) * (column - 1) + groutWidth;
+            var y = (tileSize.height + groutWidth) * (row - 1) + groutWidth;
+            var width = tileSize.width;
+            var height = tileSize.height;
+            context2d().fillRect(scaled(x), scaled(y), scaled(width), scaled(height));
+            context2d().globalAlpha = lastAlpha;
+        }
+
         function context2d() {
             return canvas.getContext("2d");
         }
@@ -62,8 +104,26 @@ angular
             return dimension * scale;
         }
 
+        function unscaled(dimension) {
+            return dimension / scale;
+        }
+
         function shouldShowTilesLabels() {
             return scope.shouldShowTilesLabels;
+        }
+
+        function columnAt(x) {
+            if (arrangement) {
+                var columnWidth = arrangement.tileSize.width + arrangement.groutWidth;
+                return Math.floor(x / columnWidth) + 1;
+            }
+        }
+
+        function rowAt(y) {
+            if (arrangement) {
+                var rowHeight = arrangement.tileSize.height + arrangement.groutWidth;
+                return Math.floor(y / rowHeight) + 1;
+            }
         }
 
         return {

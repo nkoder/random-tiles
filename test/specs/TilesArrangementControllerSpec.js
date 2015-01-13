@@ -41,7 +41,7 @@ describe('TilesArrangementController', function () {
 
         // then:
         expect(ArrangementGenerator.newArrangementFor)
-            .toHaveBeenCalledWith(tileWidth, tileHeight, groutWidth, rows, columns);
+            .toHaveBeenCalledWith(rows, columns, tileWidth, tileHeight, groutWidth);
         expect(scope.arrangement).toEqual("new arrangement");
     });
 
@@ -64,6 +64,26 @@ describe('TilesArrangementController', function () {
         expect(scope.columns).toEqual(10);
     });
 
+    it("should not start swapping tiles by default", function () {
+        // given:
+
+        // when:
+
+        // then:
+        expect(scope.isSwappingTilesInProgress).toBeFalsy();
+    });
+
+    it("should not start swapping tiles on new arrangement even if it was in progress before", function () {
+        // given:
+        scope.isSwappingTilesInProgress = true;
+
+        // when:
+        generateNextArrangement();
+
+        // then:
+        expect(scope.isSwappingTilesInProgress).toBeFalsy();
+    });
+
     function createControllerWitchScopeAttached() {
         scope = $rootScope.$new();
         $controller('TilesArrangementController', {
@@ -71,8 +91,8 @@ describe('TilesArrangementController', function () {
         });
     }
 
-    function generateNextArrangement(tileWidth, tileHeight, groutWidth, rows, columns) {
-        scope.generateNextArrangement(tileWidth || 10, tileHeight || 10, groutWidth || 1, rows || 2, columns || 3);
+    function generateNextArrangement(rows, columns, tileWidth, tileHeight, groutWidth) {
+        scope.generateNextArrangement(rows || 2, columns || 3, tileWidth || 10, tileHeight || 10, groutWidth || 1);
     }
 
 });

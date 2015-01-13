@@ -21,8 +21,7 @@ describe('ArrangementGenerator', function () {
         spyOn(TilesProvider, "randomTile").and.returnValue("random tile");
 
         // when:
-        var arrangement = ArrangementGenerator
-            .newArrangementFor(tileInnerWidth, tileInnerHeight, groutWidth, rows, columns);
+        var arrangement = newArrangementFor(rows, columns, tileInnerWidth, tileInnerHeight, groutWidth);
 
         // then:
         expect(TilesProvider.initTiles).toHaveBeenCalled();
@@ -39,6 +38,27 @@ describe('ArrangementGenerator', function () {
         });
         expectCells(actualPositions).toContainSameElementsAs(positionsFor(rows, columns));
     });
+
+    it("should swap tiles", function () {
+        // given:
+        const rows = 3;
+        const columns = 4;
+        var arrangement = newArrangementFor(rows, columns);
+        tileIn(arrangement).at(1, 2).name = "tile1";
+        tileIn(arrangement).at(3, 4).name = "tile2";
+
+        // when:
+        arrangement.swapTileAt(1, 2).withTileAt(3, 4);
+
+        // then:
+        expect(tileIn(arrangement).at(1, 2).name).toEqual("tile2");
+        expect(tileIn(arrangement).at(3, 4).name).toEqual("tile1");
+    });
+
+    function newArrangementFor(rows, columns, tileInnerWidth, tileInnerHeight, groutWidth) {
+        return ArrangementGenerator
+            .newArrangementFor(rows || 2, columns || 3, tileInnerWidth || 10, tileInnerHeight || 10, groutWidth || 1);
+    }
 
     function expectCells(actual) {
         return {
@@ -65,6 +85,17 @@ describe('ArrangementGenerator', function () {
             });
         });
         return cells;
+    }
+
+    function tileIn(arrangement) {
+        return {
+            at: function (row, column) {
+                return _.find(arrangement.arrangedTiles, function (arrangedTile) {
+                    return arrangedTile.position.row === row
+                        && arrangedTile.position.column === column;
+                });
+            }
+        }
     }
 
 });

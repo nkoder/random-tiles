@@ -4,7 +4,7 @@ angular
 
         var TilesProvider = _TilesProvider_;
 
-        function Arrangement(tileWidth, tileHeight, groutWidth, rows, columns) {
+        function Arrangement(rows, columns, tileWidth, tileHeight, groutWidth) {
 
             var arrangedTiles = [];
 
@@ -22,11 +22,31 @@ angular
                 });
             });
 
+            function swapTileAt(sourceRow, sourceColumn) {
+                return {
+                    withTileAt: function (targetRow, targetColumn) {
+                        var sourceArrangedTile = _.find(arrangedTiles, function (arrangedTile) {
+                            return arrangedTile.position.row === sourceRow
+                                && arrangedTile.position.column === sourceColumn;
+                        });
+                        var targetArrangedTile = _.find(arrangedTiles, function (arrangedTile) {
+                            return arrangedTile.position.row === targetRow
+                                && arrangedTile.position.column === targetColumn;
+                        });
+                        sourceArrangedTile.position.row = targetRow;
+                        sourceArrangedTile.position.column = targetColumn;
+                        targetArrangedTile.position.row = sourceRow;
+                        targetArrangedTile.position.column = sourceColumn;
+                    }
+                }
+            }
+
             return {
                 size: new Size(columns * (tileWidth + groutWidth), rows * (tileHeight + groutWidth)),
                 groutWidth: groutWidth,
                 tileSize: new Size(tileWidth, tileHeight),
-                arrangedTiles: arrangedTiles
+                arrangedTiles: arrangedTiles,
+                swapTileAt: swapTileAt
             };
 
         }
@@ -39,8 +59,8 @@ angular
         }
 
         return {
-            newArrangementFor: function (tileWidth, tileHeight, groutWidth, rows, columns) {
-                return new Arrangement(tileWidth, tileHeight, groutWidth, rows, columns);
+            newArrangementFor: function (rows, columns, tileWidth, tileHeight, groutWidth) {
+                return new Arrangement(rows, columns, tileWidth, tileHeight, groutWidth);
             }
         }
 
