@@ -1,11 +1,13 @@
 describe('ArrangementGenerator', function () {
 
     var ArrangementGenerator;
+    var TilesProvider;
 
     beforeEach(module('randomTiles'));
 
-    beforeEach(inject(function (_ArrangementGenerator_) {
+    beforeEach(inject(function (_ArrangementGenerator_, _TilesProvider_) {
         ArrangementGenerator = _ArrangementGenerator_;
+        TilesProvider = _TilesProvider_;
     }));
 
     it("should generate new arrangement", function () {
@@ -15,41 +17,42 @@ describe('ArrangementGenerator', function () {
         const tileInnerWidth = 4;
         const tileInnerHeight = 5;
         const groutWidth = 1;
+        spyOn(TilesProvider, "randomTile").and.returnValue("random tile");
 
         // when:
         var arrangement = ArrangementGenerator
             .newArrangementFor(tileInnerWidth, tileInnerHeight, groutWidth, rows, columns);
 
         // then:
-        var actualCells = [];
+        var actualPositions = [];
         expect(arrangement.size.width).toBe(columns * (tileInnerWidth + groutWidth));
         expect(arrangement.size.height).toBe(rows * (tileInnerHeight + groutWidth));
         expect(arrangement.tileSize.width).toEqual(tileInnerWidth);
         expect(arrangement.tileSize.height).toEqual(tileInnerHeight);
         expect(arrangement.groutWidth).toEqual(groutWidth);
-        expect(arrangement.tiles.length).toBe(rows * columns);
-        arrangement.tiles.forEach(function (tile) {
-            expect(tile.name).toBeDefined();
-            actualCells.push(tile.cell);
+        expect(arrangement.arrangedTiles.length).toBe(rows * columns);
+        arrangement.arrangedTiles.forEach(function (arrangedTile) {
+            expect(arrangedTile.tile).toEqual("random tile");
+            actualPositions.push(arrangedTile.position);
         });
-        expectCells(actualCells).toContainSameElementsAs(cellsFor(rows, columns));
+        expectCells(actualPositions).toContainSameElementsAs(positionsFor(rows, columns));
     });
 
     function expectCells(actual) {
         return {
             toContainSameElementsAs: function (expected) {
                 expect(actual.length).toEqual(expected.length);
-                expected.forEach(function (cell) {
-                    expect(actual).toContain(cell);
+                expected.forEach(function (position) {
+                    expect(actual).toContain(position);
                 });
-                actual.forEach(function (cell) {
-                    expect(expected).toContain(cell);
+                actual.forEach(function (position) {
+                    expect(expected).toContain(position);
                 });
             }
         }
     }
 
-    function cellsFor(rows, columns) {
+    function positionsFor(rows, columns) {
         var cells = [];
         _.range(1, rows + 1).forEach(function (row) {
             _.range(1, columns + 1).forEach(function (column) {

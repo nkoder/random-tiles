@@ -6,6 +6,7 @@
     <script type="text/javascript" src="app/lib/angular.js"></script>
     <script type="text/javascript" src="app/lib/dist/lodash.compat.js"></script>
     <script type="text/javascript" src="app/TilesArrangement.js"></script>
+    <script type="text/javascript" src="app/TilesProvider.js"></script>
     <script type="text/javascript" src="app/ArrangementGenerator.js"></script>
     <script type="text/javascript" src="app/TilesArrangementController.js"></script>
     <script type="text/javascript" src="app/TilesArrangementDirective.js"></script>
@@ -15,8 +16,15 @@
 <body ng-app="randomTiles">
 
 <div ng-controller="TilesArrangementController">
-    <button id="generate-arrangement" ng-click="generateNextArrangement(198, 198, 2, 15, 10)">Generate!</button>
-    <input id="toggle-labels-visibility" type="checkbox" ng-model="shouldShowTilesLabels"/>
+    <div>
+        <form ng-submit="generateNextArrangement(198, 198, 2)">
+            Rows: <input type="text" id="rows-count" ng-model="rows"/>
+            Columns: <input type="text" id="columns-count" ng-model="columns"/>
+            <br/>
+            <button type="submit" id="generate-arrangement">Generate!</button>
+        </form>
+        Show tiles' labels? <input id="labels-visibility" type="checkbox" ng-model="shouldShowTilesLabels"/>
+    </div>
     <tiles-arrangement></tiles-arrangement>
 </div>
 

@@ -21,24 +21,24 @@ angular
                 canvas.height = scaled(arrangement.size.height);
                 context2d().fillStyle = "#000000";
                 context2d().fillRect(0, 0, canvas. width, canvas.height);
-                arrangement.tiles.forEach(function (tile) {
+                arrangement.arrangedTiles.forEach(function (arrangedTile) {
                     var tileImage = new Image();
-                    tileImage.src = "assets/img/" + tile.name + ".jpg";
+                    tileImage.src = "assets/img/" + arrangedTile.tile.name + ".jpg";
                     tileImage.onload = function () {
-                        drawTile(tileImage, tile, arrangement.tileSize, arrangement.groutWidth);
+                        drawTile(tileImage, arrangedTile, arrangement.tileSize, arrangement.groutWidth);
                     };
                 });
             }
         }
 
-        function drawTile(tileImage, tile, tileSize, groutWidth) {
-            var x = (tileSize.width + groutWidth) * (tile.cell.column - 1) + groutWidth;
-            var y = (tileSize.height + groutWidth) * (tile.cell.row - 1) + groutWidth;
+        function drawTile(tileImage, arrangedTile, tileSize, groutWidth) {
+            var x = (tileSize.width + groutWidth) * (arrangedTile.position.column - 1) + groutWidth;
+            var y = (tileSize.height + groutWidth) * (arrangedTile.position.row - 1) + groutWidth;
             var width = tileSize.width;
             var height = tileSize.height;
             context2d().drawImage(tileImage, scaled(x), scaled(y), scaled(width), scaled(height));
             if (shouldShowTilesLabels()) {
-                drawTileLabel(tile.name, x + 2, y + 2);
+                drawTileLabel(arrangedTile.tile.name, x + 2, y + 2);
             }
         }
 

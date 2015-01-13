@@ -1,21 +1,22 @@
 angular
     .module('randomTiles')
-    .factory('ArrangementGenerator', function () {
+    .factory('ArrangementGenerator', function (_TilesProvider_) {
 
-        function ArrangementGenerator() {
-            return {
-                newArrangementFor: function(tileWidth, tileHeight, groutWidth, rows, columns) {
-                    return new Arrangement(tileWidth, tileHeight, groutWidth, rows, columns);
-                }
-            }
-        }
+        var TilesProvider = _TilesProvider_;
 
         function Arrangement(tileWidth, tileHeight, groutWidth, rows, columns) {
 
-            var tiles = [];
+            var arrangedTiles = [];
+
             _.range(1, rows + 1).forEach(function (row) {
                 _.range(1, columns + 1).forEach(function (column) {
-                    tiles.push(new Tile(row, column));
+                    arrangedTiles.push({
+                        position: {
+                            row: row,
+                            column: column
+                        },
+                        tile: TilesProvider.randomTile()
+                    });
                 });
             });
 
@@ -23,34 +24,8 @@ angular
                 size: new Size(columns * (tileWidth + groutWidth), rows * (tileHeight + groutWidth)),
                 groutWidth: groutWidth,
                 tileSize: new Size(tileWidth, tileHeight),
-                tiles: tiles
+                arrangedTiles: arrangedTiles
             };
-
-        }
-
-        function Tile(row, column) {
-
-            function nextName() {
-                var randomNumber = Math.random();
-                if (randomNumber < 0.5) {
-                    if (randomNumber < 0.25) {
-                        return "barcelona-1";
-                    }
-                    return "celowniki-1"
-                }
-                if (randomNumber < 0.75) {
-                    return "kleks-1";
-                }
-                return "maziaje-1";
-            }
-
-            return {
-                name: nextName(),
-                cell: {
-                    row: row,
-                    column: column
-                }
-            }
 
         }
 
@@ -61,6 +36,10 @@ angular
             }
         }
 
-        return new ArrangementGenerator();
+        return {
+            newArrangementFor: function (tileWidth, tileHeight, groutWidth, rows, columns) {
+                return new Arrangement(tileWidth, tileHeight, groutWidth, rows, columns);
+            }
+        }
 
     });

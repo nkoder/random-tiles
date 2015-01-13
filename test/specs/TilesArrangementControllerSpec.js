@@ -35,7 +35,9 @@ describe('TilesArrangementController', function () {
         spyOn(ArrangementGenerator, "newArrangementFor").and.returnValue("new arrangement");
 
         // when:
-        generateNextArrangement(tileWidth, tileHeight, groutWidth, rows, columns);
+        scope.rows = rows;
+        scope.columns = columns;
+        generateNextArrangement(tileWidth, tileHeight, groutWidth);
 
         // then:
         expect(ArrangementGenerator.newArrangementFor)
@@ -47,10 +49,19 @@ describe('TilesArrangementController', function () {
         // given:
 
         // when:
-        generateNextArrangement();
 
         // then:
         expect(scope.shouldShowTilesLabels).toBe(false);
+    });
+
+    it("should set default rows and columns number", function () {
+        // given:
+
+        // when:
+
+        // then:
+        expect(scope.rows).toEqual(15);
+        expect(scope.columns).toEqual(10);
     });
 
     function createControllerWitchScopeAttached() {
