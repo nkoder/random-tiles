@@ -1,6 +1,8 @@
 angular
     .module('randomTiles')
-    .controller('TilesArrangementController', function ($scope, ArrangementGenerator) {
+    .controller('TilesArrangementController', function ($scope, _ArrangementGenerator_) {
+
+        var ArrangementGenerator = _ArrangementGenerator_;
 
         $scope.shouldShowTilesLabels = false;
         $scope.rows = 15;

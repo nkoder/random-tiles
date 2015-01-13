@@ -17,6 +17,7 @@ describe('ArrangementGenerator', function () {
         const tileInnerWidth = 4;
         const tileInnerHeight = 5;
         const groutWidth = 1;
+        spyOn(TilesProvider, "initTiles");
         spyOn(TilesProvider, "randomTile").and.returnValue("random tile");
 
         // when:
@@ -24,6 +25,7 @@ describe('ArrangementGenerator', function () {
             .newArrangementFor(tileInnerWidth, tileInnerHeight, groutWidth, rows, columns);
 
         // then:
+        expect(TilesProvider.initTiles).toHaveBeenCalled();
         var actualPositions = [];
         expect(arrangement.size.width).toBe(columns * (tileInnerWidth + groutWidth));
         expect(arrangement.size.height).toBe(rows * (tileInnerHeight + groutWidth));

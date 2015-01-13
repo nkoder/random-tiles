@@ -8,6 +8,8 @@ angular
 
             var arrangedTiles = [];
 
+            TilesProvider.initTiles();
+
             _.range(1, rows + 1).forEach(function (row) {
                 _.range(1, columns + 1).forEach(function (column) {
                     arrangedTiles.push({
