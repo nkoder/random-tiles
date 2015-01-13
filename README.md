@@ -38,3 +38,4 @@ ToDo
 - [ ] user cannot enter invalid values
 - [ ] user can choose between two tiles sets: 1x1 and 2x1; pattern for 2x1 tiles is brick-like
 - [ ] user can choose between two layouts for 2x1 tiles: brick-like and random (horizontally and vertically)
+- [ ] user can access application by use of public URL
