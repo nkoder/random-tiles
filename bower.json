@@ -2,12 +2,15 @@
   "name": "random-tiles",
   "version": "0.0.0",
   "description": "Webapp helping with random-like arrangement of floor tiles",
-  "authors": [ "Paweł Barszcz @nkoder"],
+  "authors": [
+    "Paweł Barszcz @nkoder"
+  ],
   "license": "MIT",
   "repository": "https://github.com/nkoder/random-tiles",
   "private": true,
   "dependencies": {
-    "angular": "~1.3.8"
+    "angular": "~1.3.8",
+    "lodash": "~2.4.1"
   },
   "devDependencies": {
     "angular-mocks": "~1.3.8"

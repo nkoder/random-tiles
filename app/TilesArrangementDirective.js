@@ -2,6 +2,8 @@ var randomTiles = angular.module('randomTiles');
 
 randomTiles.directive('tilesArrangement', function () {
 
+    const scale = 0.5;
+
     var context2d;
     var scope;
 
@@ -12,12 +14,19 @@ randomTiles.directive('tilesArrangement', function () {
     }
 
     function updateCanvas() {
-        if (scope.arrangement) {
-            var tileImage = new Image();
-            tileImage.src = "assets/img/" + scope.arrangement.tile + ".jpg";
-            tileImage.onload = function () {
-                context2d.drawImage(tileImage, 0, 0, 100, 100);
-            };
+        var arrangement = scope.arrangement;
+        if (arrangement) {
+            arrangement.tiles.forEach(function (tile) {
+                var tileImage = new Image();
+                tileImage.src = "assets/img/" + tile.name + ".jpg";
+                tileImage.onload = function () {
+                    var x = tile.width * (tile.cell.column - 1) * scale;
+                    var y = tile.height * (tile.cell.row - 1) * scale;
+                    var width = tile.width * scale;
+                    var height = tile.height * scale;
+                    context2d.drawImage(tileImage, x, y, width, height);
+                };
+            });
         }
     }
 

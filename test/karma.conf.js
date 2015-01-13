@@ -11,6 +11,7 @@ module.exports = function (config) {
 
         files: [
             libPath + 'angular.js',
+            libPath + 'dist/lodash.compat.js',
             testLibPath + 'angular-mocks.js',
             srcPath + '*.js',
             testSrcPath + '*.js'
