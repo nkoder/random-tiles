@@ -21,20 +21,24 @@ describe('TilesArrangementController', function () {
 
     it("should generate next arrangement", function () {
         // given:
+        const rows = 2;
+        const columns = 3;
+        const tileWidth = 4;
+        const tileHeight = 5;
         var scope = scopeAttachedToController();
-        var rows = 2;
-        var columns = 3;
 
         // when:
-        scope.generateNextArrangement(rows, columns);
+        scope.generateNextArrangement(tileWidth, tileHeight, rows, columns);
 
         // then:
         var actualCells = [];
+        expect(scope.arrangement.size.width).toBe(columns * tileWidth);
+        expect(scope.arrangement.size.height).toBe(rows * tileHeight);
+        expect(scope.arrangement.tileSize.width).toEqual(tileWidth);
+        expect(scope.arrangement.tileSize.height).toEqual(tileHeight);
         expect(scope.arrangement.tiles.length).toBe(rows * columns);
         scope.arrangement.tiles.forEach(function (tile) {
             expect(tile.name).toBeDefined();
-            expect(tile.width).toEqual(200);
-            expect(tile.height).toEqual(200);
             actualCells.push(tile.cell);
         });
         expectCells(actualCells).toContainSameElementsAs(cellsFor(rows, columns));

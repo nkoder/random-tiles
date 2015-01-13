@@ -4,26 +4,29 @@ randomTiles.directive('tilesArrangement', function () {
 
     const scale = 0.5;
 
-    var context2d;
     var scope;
+    var canvas;
 
     function link(_scope_, _element_) {
         scope = _scope_;
-        context2d = _element_[0].getContext("2d");
+        canvas = _element_[0];
         scope.$watch('arrangement', updateCanvas);
     }
 
     function updateCanvas() {
         var arrangement = scope.arrangement;
         if (arrangement) {
+            canvas.width = arrangement.size.width * scale;
+            canvas.height = arrangement.size.height * scale;
             arrangement.tiles.forEach(function (tile) {
                 var tileImage = new Image();
                 tileImage.src = "assets/img/" + tile.name + ".jpg";
                 tileImage.onload = function () {
-                    var x = tile.width * (tile.cell.column - 1) * scale;
-                    var y = tile.height * (tile.cell.row - 1) * scale;
-                    var width = tile.width * scale;
-                    var height = tile.height * scale;
+                    var x = arrangement.tileSize.width * (tile.cell.column - 1) * scale;
+                    var y = arrangement.tileSize.height * (tile.cell.row - 1) * scale;
+                    var width = arrangement.tileSize.width * scale;
+                    var height = arrangement.tileSize.height * scale;
+                    var context2d = canvas.getContext("2d");
                     context2d.drawImage(tileImage, x, y, width, height);
                 };
             });

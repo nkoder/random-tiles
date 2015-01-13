@@ -5,6 +5,9 @@
     <title>Random Tiles</title>
     <script type="text/javascript" src="app/lib/angular.js"></script>
     <script type="text/javascript" src="app/lib/dist/lodash.compat.js"></script>
+    <script type="text/javascript" src="app/Size.js"></script>
+    <script type="text/javascript" src="app/Tile.js"></script>
+    <script type="text/javascript" src="app/Arrangement.js"></script>
     <script type="text/javascript" src="app/TilesArrangement.js"></script>
     <script type="text/javascript" src="app/TilesArrangementController.js"></script>
     <script type="text/javascript" src="app/TilesArrangementDirective.js"></script>
@@ -14,7 +17,7 @@
 <body ng-app="randomTiles" ng-strict-di>
 
   <div ng-controller="TilesArrangementController">
-    <button id="generate-arrangement" ng-click="generateNextArrangement(15,10)">Generate!</button>
+    <button id="generate-arrangement" ng-click="generateNextArrangement(200, 200, 15, 10)">Generate!</button>
     <tiles-arrangement></tiles-arrangement>
   </div>
 
