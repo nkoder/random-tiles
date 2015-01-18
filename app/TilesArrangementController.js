@@ -5,7 +5,7 @@ angular
         var ArrangementGenerator = _ArrangementGenerator_;
 
         $scope.shouldShowTilesLabels = false;
-        $scope.rows = 20;
+        $scope.rows = 22;
         $scope.columns = 9;
 
         $scope.generateNextArrangement = function (tileWidth, tileHeight, groutWidth) {
