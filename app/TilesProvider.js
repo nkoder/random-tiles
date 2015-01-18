@@ -120,7 +120,7 @@ angular
             type.amount -= 1;
             if (type.amount <= 0) {
                 _.remove(family.types, typeWithIdEqualTo(usedTypeId));
-                if (family.types.length === 0) {
+                if (_.isEmpty(family.types)) {
                     _.remove(tileFamilies, familyWithNameEqualTo(usedFamilyName));
                 }
             }

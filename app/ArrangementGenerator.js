@@ -10,17 +10,15 @@ angular
 
             TilesProvider.initTiles();
 
-            _.range(1, rows + 1).forEach(function (row) {
-                _.range(1, columns + 1).forEach(function (column) {
-                    arrangedTiles.push({
-                        position: {
-                            row: row,
-                            column: column
-                        },
-                        tile: TilesProvider.randomTile()
-                    });
+            var leftPositions = positionsFor(rows, columns);
+            while (!_.isEmpty(leftPositions)) {
+                var position = _.sample(leftPositions);
+                arrangedTiles.push({
+                    position: position,
+                    tile: TilesProvider.randomTile()
                 });
-            });
+                _.remove(leftPositions, position);
+            }
 
             function swapTileAt(sourceRow, sourceColumn) {
                 return {
@@ -56,6 +54,19 @@ angular
                 width: width,
                 height: height
             }
+        }
+
+        function positionsFor(rows, columns) {
+            var cells = [];
+            _.range(1, rows + 1).forEach(function (row) {
+                _.range(1, columns + 1).forEach(function (column) {
+                    cells.push({
+                        row: row,
+                        column: column
+                    });
+                });
+            });
+            return cells;
         }
 
         return {
