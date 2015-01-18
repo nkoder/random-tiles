@@ -60,7 +60,7 @@ describe('TilesArrangementController', function () {
         // when:
 
         // then:
-        expect(scope.rows).toEqual(20);
+        expect(scope.rows).toEqual(22);
         expect(scope.columns).toEqual(9);
     });
 

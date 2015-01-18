@@ -25,4 +25,34 @@ describe('TilesProvider', function () {
         expect(tile.name).toEqual("familyA-1");
     });
 
+    it("should remove used tiles", function () {
+        // given:
+        TilesProvider.setTilesInTestWith([{
+            familyName: "familyA",
+            types: [{
+                id: 1,
+                amount: 2
+            }]
+        }, {
+            familyName: "familyB",
+            types: [{
+                id: 1,
+                amount: 1
+            }, {
+                id: 2,
+                amount: 1
+            }]
+        }]);
+
+        // when:
+        console.log("START TEST");
+        TilesProvider.randomTile();
+        TilesProvider.randomTile();
+        TilesProvider.randomTile();
+        TilesProvider.randomTile();
+
+        // then:
+        expect(TilesProvider.randomTile().name).not.toBeDefined();
+    });
+
 });

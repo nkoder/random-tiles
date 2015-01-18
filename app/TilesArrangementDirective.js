@@ -48,12 +48,16 @@ angular
         function updateCanvas() {
             arrangement = scope.arrangement;
             if (arrangement) {
-                canvas.width = scaled(arrangement.size.width);
-                canvas.height = scaled(arrangement.size.height);
-                context2d().fillStyle = "#000000";
-                context2d().fillRect(0, 0, canvas. width, canvas.height);
+                resetCanvas();
                 loadImages();
             }
+        }
+
+        function resetCanvas() {
+            canvas.width = scaled(arrangement.size.width);
+            canvas.height = scaled(arrangement.size.height);
+            context2d().fillStyle = "#000000";
+            context2d().fillRect(0, 0, canvas.width, canvas.height);
         }
 
         function loadImages() {
@@ -62,7 +66,7 @@ angular
             imagesToBeLoaded = 0;
             arrangement.arrangedTiles.forEach(function (arrangedTile) {
                 var tileName = arrangedTile.tile.name;
-                if (images[tileName]) {
+                if (tileName === undefined || images[tileName]) {
                     return;
                 }
                 imagesToBeLoaded++;
@@ -81,7 +85,10 @@ angular
 
         function drawTiles() {
             arrangement.arrangedTiles.forEach(function (arrangedTile) {
-                drawTile(images[arrangedTile.tile.name], arrangedTile, arrangement.tileSize, arrangement.groutWidth);
+                var tileName = arrangedTile.tile.name;
+                if (tileName) {
+                    drawTile(images[tileName], arrangedTile, arrangement.tileSize, arrangement.groutWidth);
+                }
             });
         }
 

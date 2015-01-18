@@ -4,15 +4,23 @@ angular
 
         var tileFamilies = [];
 
+        function randomTile() {
+            return new Tile();
+        }
+
         function Tile() {
             return {
-                name: nextName()
+                name: useNextAvailableName()
             }
         }
 
-        function nextName() {
+        function useNextAvailableName() {
+            if (tileFamilies.length === 0) {
+                return undefined;
+            }
             var tileFamily = _.sample(tileFamilies);
             var tileType = _.sample(tileFamily.types);
+            useOneTileOf(tileFamily.familyName, tileType.id);
             return tileFamily.familyName + "-" + tileType.id;
         }
 
@@ -106,11 +114,33 @@ angular
             tileFamilies = newTiles;
         }
 
+        function useOneTileOf(usedFamilyName, usedTypeId) {
+            var family = _.find(tileFamilies, familyWithNameEqualTo(usedFamilyName));
+            var type = _.find(family.types, typeWithIdEqualTo(usedTypeId));
+            type.amount -= 1;
+            if (type.amount <= 0) {
+                _.remove(family.types, typeWithIdEqualTo(usedTypeId));
+                if (family.types.length === 0) {
+                    _.remove(tileFamilies, familyWithNameEqualTo(usedFamilyName));
+                }
+            }
+        }
+
+        function familyWithNameEqualTo(familyName) {
+            return function (family) {
+                return family.familyName === familyName;
+            }
+        }
+
+        function typeWithIdEqualTo(typeId) {
+            return function (type) {
+                return type.id === typeId;
+            }
+        }
+
         return {
             initTiles: initTiles,
-            randomTile: function () {
-                return new Tile();
-            },
+            randomTile: randomTile,
             setTilesInTestWith: setTiles
         };
 
