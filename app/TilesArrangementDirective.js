@@ -10,6 +10,7 @@ angular
         var canvas;
         var arrangement;
         var sourceRowToSwap, sourceColumnToSwap;
+        var images, imagesLoaded, imagesToBeLoaded;
 
         function link(_scope_, _element_) {
             scope = _scope_;
@@ -51,20 +52,37 @@ angular
                 canvas.height = scaled(arrangement.size.height);
                 context2d().fillStyle = "#000000";
                 context2d().fillRect(0, 0, canvas. width, canvas.height);
-                var tilesAmount = arrangement.arrangedTiles.length;
-                var tilesDrawn = 0;
-                arrangement.arrangedTiles.forEach(function (arrangedTile) {
-                    var tileImage = new Image();
-                    tileImage.src = "assets/img/" + arrangedTile.tile.name + ".jpg";
-                    tileImage.onload = function () {
-                        drawTile(tileImage, arrangedTile, arrangement.tileSize, arrangement.groutWidth);
-                        tilesDrawn++;
-                        if (tilesDrawn >= tilesAmount) {
-                            drawBathroomShape();
-                        }
-                    };
-                });
+                loadImages();
             }
+        }
+
+        function loadImages() {
+            images = [];
+            imagesLoaded = 0;
+            imagesToBeLoaded = 0;
+            arrangement.arrangedTiles.forEach(function (arrangedTile) {
+                var tileName = arrangedTile.tile.name;
+                if (images[tileName]) {
+                    return;
+                }
+                imagesToBeLoaded++;
+                var image = new Image();
+                image.src = "assets/img/" + tileName + ".jpg";
+                image.onload = function () {
+                    imagesLoaded++;
+                    if (imagesLoaded >= imagesToBeLoaded) {
+                        drawTiles();
+                        drawBathroomShape();
+                    }
+                };
+                images[tileName] = image;
+            });
+        }
+
+        function drawTiles() {
+            arrangement.arrangedTiles.forEach(function (arrangedTile) {
+                drawTile(images[arrangedTile.tile.name], arrangedTile, arrangement.tileSize, arrangement.groutWidth);
+            });
         }
 
         function drawTile(tileImage, arrangedTile, tileSize, groutWidth) {
