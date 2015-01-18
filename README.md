@@ -36,7 +36,7 @@ ToDo
 - [ ] tiles arrangements uses tiles regarding amount of tiles of every type
 - [x] user can swap selected tiles
 - [ ] user can save and restore tiles arrangement
-- [ ] user can see bathroom border on top of arrangement
+- [x] user can see bathroom shape on top of arrangement
 - [ ] user cannot define rows and columns number, but all available tiles are drawn using as many rows as is needed to fit them all; number of columns depends on bathroom size
 - [ ] users see how many tiles of every type left not used in arrangement
 - [ ] user cannot enter invalid values

@@ -1,8 +1,10 @@
 angular
     .module('randomTiles')
-    .directive('tilesArrangement', function () {
+    .directive('tilesArrangement', function (_BathroomShape_) {
 
         const scale = 0.5;
+
+        var BathroomShape = _BathroomShape_;
 
         var scope;
         var canvas;
@@ -49,11 +51,17 @@ angular
                 canvas.height = scaled(arrangement.size.height);
                 context2d().fillStyle = "#000000";
                 context2d().fillRect(0, 0, canvas. width, canvas.height);
+                var tilesAmount = arrangement.arrangedTiles.length;
+                var tilesDrawn = 0;
                 arrangement.arrangedTiles.forEach(function (arrangedTile) {
                     var tileImage = new Image();
                     tileImage.src = "assets/img/" + arrangedTile.tile.name + ".jpg";
                     tileImage.onload = function () {
                         drawTile(tileImage, arrangedTile, arrangement.tileSize, arrangement.groutWidth);
+                        tilesDrawn++;
+                        if (tilesDrawn >= tilesAmount) {
+                            drawBathroomShape();
+                        }
                     };
                 });
             }
@@ -80,6 +88,21 @@ angular
             context2d().fillRect(scaled(x), scaled(y), width, height);
             context2d().fillStyle = "#000000";
             context2d().fillText(labelText, scaled(x) + textXOffset, scaled(y));
+        }
+
+        function drawBathroomShape() {
+            var lastAlpha = context2d().globalAlpha;
+            context2d().globalAlpha = 0.4;
+            context2d().beginPath();
+            context2d().strokeStyle = "#FF0000";
+            context2d().lineWidth = 5;
+            _.forEach(BathroomShape.lines(), function (line) {
+                context2d().moveTo(scaled(line.x1), scaled(line.y1));
+                context2d().lineTo(scaled(line.x2), scaled(line.y2));
+            });
+            context2d().closePath();
+            context2d().stroke();
+            context2d().globalAlpha = lastAlpha;
         }
 
         function highlightTileAt(row, column) {

@@ -60,8 +60,8 @@ describe('TilesArrangementController', function () {
         // when:
 
         // then:
-        expect(scope.rows).toEqual(15);
-        expect(scope.columns).toEqual(10);
+        expect(scope.rows).toEqual(20);
+        expect(scope.columns).toEqual(9);
     });
 
     it("should not start swapping tiles by default", function () {
