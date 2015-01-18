@@ -15,7 +15,7 @@ angular
                 var position = _.sample(leftPositions);
                 arrangedTiles.push({
                     position: position,
-                    clockwiseRotations: 0,
+                    clockwiseRotations: _.random(1, 4),
                     tile: TilesProvider.randomTile()
                 });
                 _.remove(leftPositions, position);
