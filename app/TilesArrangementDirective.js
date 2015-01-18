@@ -123,17 +123,22 @@ angular
 
         function drawBathroomShape() {
             context2d().save();
-            context2d().globalAlpha = 0.4;
+            context2d().globalAlpha = 0.6;
             context2d().beginPath();
             context2d().strokeStyle = "#FF0000";
             context2d().lineWidth = 5;
-            _.forEach(BathroomShape.lines(), function (line) {
-                context2d().moveTo(scaled(line.x1), scaled(line.y1));
-                context2d().lineTo(scaled(line.x2), scaled(line.y2));
-            });
+            drawShape(BathroomShape.mainLines());
+            drawShape(BathroomShape.showerLines());
             context2d().closePath();
             context2d().stroke();
             context2d().restore();
+        }
+
+        function drawShape(lines) {
+            _.forEach(lines, function (line) {
+                context2d().moveTo(scaled(line.x1), scaled(line.y1));
+                context2d().lineTo(scaled(line.x2), scaled(line.y2));
+            });
         }
 
         function highlightTileAt(row, column) {

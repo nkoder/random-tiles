@@ -2,30 +2,44 @@ angular
     .module('randomTiles')
     .factory('BathroomShape', function () {
 
-        var coordinates = new Coordinates();
-        coordinates.ofNextVerticalLineOfLength(110);
-        var lines = [
-            coordinates.ofNextHorizontalLineOfLength(1710),
-            coordinates.ofNextVerticalLineOfLength(1290),
-            coordinates.ofNextHorizontalLineOfLength(-100),
-            coordinates.ofNextVerticalLineOfLength(800),
-            coordinates.ofNextHorizontalLineOfLength(-510),
-            coordinates.ofNextVerticalLineOfLength(365),
-            coordinates.ofNextHorizontalLineOfLength(-70),
-            coordinates.ofNextVerticalLineOfLength(160),
-            coordinates.ofNextHorizontalLineOfLength(680),
-            coordinates.ofNextVerticalLineOfLength(1260),
-            coordinates.ofNextHorizontalLineOfLength(-1710),
-            coordinates.ofNextVerticalLineOfLength(-1260),
-            coordinates.ofNextHorizontalLineOfLength(105),
-            coordinates.ofNextVerticalLineOfLength(-160),
-            coordinates.ofNextHorizontalLineOfLength(-105),
-            coordinates.ofNextVerticalLineOfLength(-2455)
-        ];
+        var mainLines = initMainLinesFrom(0, 110);
+        var showerLines = initShowerLinesFrom(1800, 200);
 
-        function Coordinates() {
-            var currentX = 0;
-            var currentY = 0;
+        function initMainLinesFrom(startX, startY) {
+            var coordinates = new Coordinates(startX, startY);
+            return [
+                coordinates.ofNextHorizontalLineOfLength(1710),
+                coordinates.ofNextVerticalLineOfLength(1290),
+                coordinates.ofNextHorizontalLineOfLength(-110),
+                coordinates.ofNextVerticalLineOfLength(800),
+                coordinates.ofNextHorizontalLineOfLength(-500),
+                coordinates.ofNextVerticalLineOfLength(365),
+                coordinates.ofNextHorizontalLineOfLength(-70),
+                coordinates.ofNextVerticalLineOfLength(160),
+                coordinates.ofNextHorizontalLineOfLength(680),
+                coordinates.ofNextVerticalLineOfLength(1260),
+                coordinates.ofNextHorizontalLineOfLength(-1710),
+                coordinates.ofNextVerticalLineOfLength(-1260),
+                coordinates.ofNextHorizontalLineOfLength(105),
+                coordinates.ofNextVerticalLineOfLength(-160),
+                coordinates.ofNextHorizontalLineOfLength(-105),
+                coordinates.ofNextVerticalLineOfLength(-2455)
+            ];
+        }
+
+        function initShowerLinesFrom(startX, startY) {
+            var coordinates = new Coordinates(startX, startY);
+            return [
+                coordinates.ofNextHorizontalLineOfLength(400),
+                coordinates.ofNextVerticalLineOfLength(800),
+                coordinates.ofNextHorizontalLineOfLength(-400),
+                coordinates.ofNextVerticalLineOfLength(-800),
+            ];
+        }
+
+        function Coordinates(startX, startY) {
+            var currentX = startX;
+            var currentY = startY;
             return {
                 ofNextHorizontalLineOfLength: function (length) {
                     var line = {
@@ -51,8 +65,11 @@ angular
         }
 
         return {
-            lines: function () {
-                return lines;
+            mainLines: function () {
+                return mainLines;
+            },
+            showerLines: function () {
+                return showerLines;
             }
         };
 
