@@ -1,13 +1,16 @@
 angular
     .module('randomTiles')
-    .directive('tilesArrangement', function () {
+    .directive('tilesArrangement', function (_BathroomShape_) {
 
         const scale = 0.5;
+
+        var BathroomShape = _BathroomShape_;
 
         var scope;
         var canvas;
         var arrangement;
         var sourceRowToSwap, sourceColumnToSwap;
+        var images, imagesLoaded, imagesToBeLoaded;
 
         function link(_scope_, _element_) {
             scope = _scope_;
@@ -49,14 +52,37 @@ angular
                 canvas.height = scaled(arrangement.size.height);
                 context2d().fillStyle = "#000000";
                 context2d().fillRect(0, 0, canvas. width, canvas.height);
-                arrangement.arrangedTiles.forEach(function (arrangedTile) {
-                    var tileImage = new Image();
-                    tileImage.src = "assets/img/" + arrangedTile.tile.name + ".jpg";
-                    tileImage.onload = function () {
-                        drawTile(tileImage, arrangedTile, arrangement.tileSize, arrangement.groutWidth);
-                    };
-                });
+                loadImages();
             }
+        }
+
+        function loadImages() {
+            images = [];
+            imagesLoaded = 0;
+            imagesToBeLoaded = 0;
+            arrangement.arrangedTiles.forEach(function (arrangedTile) {
+                var tileName = arrangedTile.tile.name;
+                if (images[tileName]) {
+                    return;
+                }
+                imagesToBeLoaded++;
+                var image = new Image();
+                image.src = "assets/img/" + tileName + ".jpg";
+                image.onload = function () {
+                    imagesLoaded++;
+                    if (imagesLoaded >= imagesToBeLoaded) {
+                        drawTiles();
+                        drawBathroomShape();
+                    }
+                };
+                images[tileName] = image;
+            });
+        }
+
+        function drawTiles() {
+            arrangement.arrangedTiles.forEach(function (arrangedTile) {
+                drawTile(images[arrangedTile.tile.name], arrangedTile, arrangement.tileSize, arrangement.groutWidth);
+            });
         }
 
         function drawTile(tileImage, arrangedTile, tileSize, groutWidth) {
@@ -80,6 +106,21 @@ angular
             context2d().fillRect(scaled(x), scaled(y), width, height);
             context2d().fillStyle = "#000000";
             context2d().fillText(labelText, scaled(x) + textXOffset, scaled(y));
+        }
+
+        function drawBathroomShape() {
+            var lastAlpha = context2d().globalAlpha;
+            context2d().globalAlpha = 0.4;
+            context2d().beginPath();
+            context2d().strokeStyle = "#FF0000";
+            context2d().lineWidth = 5;
+            _.forEach(BathroomShape.lines(), function (line) {
+                context2d().moveTo(scaled(line.x1), scaled(line.y1));
+                context2d().lineTo(scaled(line.x2), scaled(line.y2));
+            });
+            context2d().closePath();
+            context2d().stroke();
+            context2d().globalAlpha = lastAlpha;
         }
 
         function highlightTileAt(row, column) {
