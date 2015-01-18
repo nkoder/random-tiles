@@ -94,7 +94,7 @@ angular
                     .withType(3).inAmountOf(5)
                     .named("kwiatki"),
                 newTileFamily()
-                    .withType(1).inAmountOf(17)
+                    .withType(1).inAmountOf(25)
                     .named("maziaje"),
                 newTileFamily()
                     .withType(1).inAmountOf(8)
