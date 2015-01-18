@@ -83,7 +83,7 @@ angular
                     .withType(3).inAmountOf(6)
                     .named("mandarynka"),
                 newTileFamily()
-                    .withType(1).inAmountOf(25)
+                    .withType(1).inAmountOf(17)
                     .named("maziaje"),
                 newTileFamily()
                     .withType(1).inAmountOf(8)
