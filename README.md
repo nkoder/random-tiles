@@ -33,7 +33,7 @@ ToDo
 - [x] user can see tiles labels
 - [x] user can show/hide tiles labels
 - [x] user can change rows and column number of next tiles arrangement
-- [ ] tiles arrangements uses tiles regarding amount of tiles of every type
+- [x] tiles arrangements uses tiles regarding amount of tiles of every type
 - [x] user can swap selected tiles
 - [ ] user can save and restore tiles arrangement
 - [x] user can see bathroom shape on top of arrangement
