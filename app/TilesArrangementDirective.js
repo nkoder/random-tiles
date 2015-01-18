@@ -56,7 +56,7 @@ angular
         function resetCanvas() {
             canvas.width = scaled(arrangement.size.width);
             canvas.height = scaled(arrangement.size.height);
-            context2d().fillStyle = "#000000";
+            context2d().fillStyle = "#FFFFFF";
             context2d().fillRect(0, 0, canvas.width, canvas.height);
         }
 
