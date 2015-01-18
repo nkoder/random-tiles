@@ -15,6 +15,7 @@ angular
                 var position = _.sample(leftPositions);
                 arrangedTiles.push({
                     position: position,
+                    clockwiseRotations: 0,
                     tile: TilesProvider.randomTile()
                 });
                 _.remove(leftPositions, position);
@@ -35,6 +36,9 @@ angular
                         sourceArrangedTile.position.column = targetColumn;
                         targetArrangedTile.position.row = sourceRow;
                         targetArrangedTile.position.column = sourceColumn;
+                        if (sourceRow === targetRow && sourceColumn === targetColumn) {
+                            sourceArrangedTile.clockwiseRotations = (sourceArrangedTile.clockwiseRotations + 1) % 4;
+                        }
                     }
                 }
             }

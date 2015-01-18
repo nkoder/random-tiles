@@ -97,13 +97,18 @@ angular
             var y = (tileSize.height + groutWidth) * (arrangedTile.position.row - 1) + groutWidth;
             var width = tileSize.width;
             var height = tileSize.height;
-            context2d().drawImage(tileImage, scaled(x), scaled(y), scaled(width), scaled(height));
+            context2d().save();
+            context2d().translate(scaled(x + width / 2), scaled(y + height / 2));
+            context2d().rotate(arrangedTile.clockwiseRotations * 90 * (Math.PI / 180));
+            context2d().drawImage(tileImage, scaled(-width / 2), scaled(-height / 2), scaled(width), scaled(height));
+            context2d().restore();
             if (shouldShowTilesLabels()) {
                 drawTileLabel(arrangedTile.tile.name, x + 2, y + 2);
             }
         }
 
         function drawTileLabel(labelText, x, y) {
+            context2d().save();
             context2d().font = "16px Arial";
             context2d().textBaseline = "top";
             const textXOffset = 2;
@@ -113,10 +118,11 @@ angular
             context2d().fillRect(scaled(x), scaled(y), width, height);
             context2d().fillStyle = "#000000";
             context2d().fillText(labelText, scaled(x) + textXOffset, scaled(y));
+            context2d().restore();
         }
 
         function drawBathroomShape() {
-            var lastAlpha = context2d().globalAlpha;
+            context2d().save();
             context2d().globalAlpha = 0.4;
             context2d().beginPath();
             context2d().strokeStyle = "#FF0000";
@@ -127,21 +133,21 @@ angular
             });
             context2d().closePath();
             context2d().stroke();
-            context2d().globalAlpha = lastAlpha;
+            context2d().restore();
         }
 
         function highlightTileAt(row, column) {
-            var lastAlpha = context2d().globalAlpha;
-            context2d().globalAlpha = 0.4;
-            context2d().fillStyle = "#999900";
             var tileSize = arrangement.tileSize;
             var groutWidth = arrangement.groutWidth;
             var x = (tileSize.width + groutWidth) * (column - 1) + groutWidth;
             var y = (tileSize.height + groutWidth) * (row - 1) + groutWidth;
             var width = tileSize.width;
             var height = tileSize.height;
+            context2d().save();
+            context2d().globalAlpha = 0.4;
+            context2d().fillStyle = "#999900";
             context2d().fillRect(scaled(x), scaled(y), scaled(width), scaled(height));
-            context2d().globalAlpha = lastAlpha;
+            context2d().restore();
         }
 
         function context2d() {
