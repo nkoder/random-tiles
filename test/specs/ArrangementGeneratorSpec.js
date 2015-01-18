@@ -35,6 +35,7 @@ describe('ArrangementGenerator', function () {
         arrangement.arrangedTiles.forEach(function (arrangedTile) {
             expect(arrangedTile.tile).toEqual("random tile");
             actualPositions.push(arrangedTile.position);
+            expect(arrangedTile.clockwiseRotations).toBeDefined();
         });
         expectCells(actualPositions).toContainSameElementsAs(positionsFor(rows, columns));
     });
@@ -44,15 +45,54 @@ describe('ArrangementGenerator', function () {
         const rows = 3;
         const columns = 4;
         var arrangement = newArrangementFor(rows, columns);
-        tileIn(arrangement).at(1, 2).name = "tile1";
-        tileIn(arrangement).at(3, 4).name = "tile2";
+        tileIn(arrangement).at(1, 2).tile.name = "tile1";
+        tileIn(arrangement).at(3, 4).tile.name = "tile2";
 
         // when:
         arrangement.swapTileAt(1, 2).withTileAt(3, 4);
 
         // then:
-        expect(tileIn(arrangement).at(1, 2).name).toEqual("tile2");
-        expect(tileIn(arrangement).at(3, 4).name).toEqual("tile1");
+        expect(tileIn(arrangement).at(1, 2).tile.name).toEqual("tile2");
+        expect(tileIn(arrangement).at(3, 4).tile.name).toEqual("tile1");
+    });
+
+    it("should swap tile with itself", function () {
+        // given:
+        const rows = 3;
+        const columns = 4;
+        var arrangement = newArrangementFor(rows, columns);
+        tileIn(arrangement).at(1, 2).tile.name = "tile1";
+        tileIn(arrangement).at(3, 4).tile.name = "tile2";
+
+        // when:
+        arrangement.swapTileAt(1, 2).withTileAt(1, 2);
+
+        // then:
+        expect(tileIn(arrangement).at(1, 2).tile.name).toEqual("tile1");
+        expect(tileIn(arrangement).at(3, 4).tile.name).toEqual("tile2");
+    });
+
+    it("should rotate tile when swapping with itself", function () {
+        // given:
+        const rows = 1;
+        const columns = 4;
+        var arrangement = newArrangementFor(rows, columns);
+        tileIn(arrangement).at(1, 1).clockwiseRotations = 0;
+        tileIn(arrangement).at(1, 2).clockwiseRotations = 1;
+        tileIn(arrangement).at(1, 3).clockwiseRotations = 2;
+        tileIn(arrangement).at(1, 4).clockwiseRotations = 3;
+
+        // when:
+        arrangement.swapTileAt(1, 1).withTileAt(1, 1);
+        arrangement.swapTileAt(1, 2).withTileAt(1, 2);
+        arrangement.swapTileAt(1, 3).withTileAt(1, 3);
+        arrangement.swapTileAt(1, 4).withTileAt(1, 4);
+
+        // then:
+        expect(tileIn(arrangement).at(1, 1).clockwiseRotations).toEqual(1);
+        expect(tileIn(arrangement).at(1, 2).clockwiseRotations).toEqual(2);
+        expect(tileIn(arrangement).at(1, 3).clockwiseRotations).toEqual(3);
+        expect(tileIn(arrangement).at(1, 4).clockwiseRotations).toEqual(0);
     });
 
     function newArrangementFor(rows, columns, tileInnerWidth, tileInnerHeight, groutWidth) {

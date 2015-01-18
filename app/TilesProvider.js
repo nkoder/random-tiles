@@ -59,6 +59,14 @@ angular
                     .withType(2).inAmountOf(6)
                     .named("celowniki"),
                 newTileFamily()
+                    .withType(1).inAmountOf(7)
+                    .withType(2).inAmountOf(6)
+                    .withType(3).inAmountOf(6)
+                    .named("cytryny"),
+                newTileFamily()
+                    .withType(1).inAmountOf(6)
+                    .named("kapsle"),
+                newTileFamily()
                     .withType(1).inAmountOf(5)
                     .withType(2).inAmountOf(4)
                     .withType(3).inAmountOf(5)
@@ -86,11 +94,6 @@ angular
                     .withType(3).inAmountOf(5)
                     .named("kwiatki"),
                 newTileFamily()
-                    .withType(1).inAmountOf(7)
-                    .withType(2).inAmountOf(6)
-                    .withType(3).inAmountOf(6)
-                    .named("mandarynka"),
-                newTileFamily()
                     .withType(1).inAmountOf(17)
                     .named("maziaje"),
                 newTileFamily()
@@ -103,10 +106,7 @@ angular
                     .withType(1).inAmountOf(4)
                     .withType(2).inAmountOf(5)
                     .withType(3).inAmountOf(6)
-                    .named("piksele"),
-                newTileFamily()
-                    .withType(1).inAmountOf(6)
-                    .named("szachownica")
+                    .named("piksele")
             ]);
         }
 
@@ -120,7 +120,7 @@ angular
             type.amount -= 1;
             if (type.amount <= 0) {
                 _.remove(family.types, typeWithIdEqualTo(usedTypeId));
-                if (family.types.length === 0) {
+                if (_.isEmpty(family.types)) {
                     _.remove(tileFamilies, familyWithNameEqualTo(usedFamilyName));
                 }
             }
