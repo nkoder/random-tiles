@@ -32,7 +32,6 @@ ToDo
 - [x] user can save tiles arrangement as image file
 - [x] user can see tiles labels
 - [x] user can show/hide tiles labels
-- [x] user can change rows and column number of next tiles arrangement
 - [x] tiles arrangements uses tiles regarding amount of tiles of every type
 - [x] user can swap selected tiles
 - [ ] tiles are rotated randomly

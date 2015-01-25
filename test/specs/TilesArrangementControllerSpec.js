@@ -25,18 +25,16 @@ describe('TilesArrangementController', function () {
         expect(scope.arrangement).not.toBeDefined();
     });
 
-    it("should generate next arrangement", function () {
+    it("should generate arrangement", function () {
         // given:
-        const rows = 2;
-        const columns = 3;
+        const rows = 20;
+        const columns = 11;
         const tileWidth = 6;
         const tileHeight = 7;
         const groutWidth = 7;
         spyOn(ArrangementGenerator, "newArrangementFor").and.returnValue("new arrangement");
 
         // when:
-        scope.rows = rows;
-        scope.columns = columns;
         generateNextArrangement(tileWidth, tileHeight, groutWidth);
 
         // then:
@@ -52,16 +50,6 @@ describe('TilesArrangementController', function () {
 
         // then:
         expect(scope.shouldShowTilesLabels).toBe(false);
-    });
-
-    it("should set default rows and columns number", function () {
-        // given:
-
-        // when:
-
-        // then:
-        expect(scope.rows).toEqual(20);
-        expect(scope.columns).toEqual(11);
     });
 
     it("should not start swapping tiles by default", function () {

@@ -5,13 +5,13 @@ angular
         var ArrangementGenerator = _ArrangementGenerator_;
 
         $scope.shouldShowTilesLabels = false;
-        $scope.rows = 20;
-        $scope.columns = 11;
+        const rows = 20;
+        const columns = 11;
 
         $scope.generateNextArrangement = function (tileWidth, tileHeight, groutWidth) {
             $scope.isSwappingTilesInProgress = false;
-            $scope.arrangement = ArrangementGenerator
-                .newArrangementFor($scope.rows, $scope.columns, tileWidth, tileHeight, groutWidth);
+            $scope.arrangement =
+                ArrangementGenerator.newArrangementFor(rows, columns, tileWidth, tileHeight, groutWidth);
         };
 
     });
