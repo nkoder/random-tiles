@@ -34,12 +34,7 @@ ToDo
 - [x] user can show/hide tiles labels
 - [x] tiles arrangements uses tiles regarding amount of tiles of every type
 - [x] user can swap selected tiles
-- [ ] tiles are rotated randomly
+- [x] tiles are rotated randomly
 - [x] user can rotate selected tiles
-- [ ] user can save and restore tiles arrangement
 - [x] user can see bathroom shape on top of arrangement
-- [ ] user cannot define rows and columns number, but all available tiles are drawn using as many rows as is needed to fit them all; number of columns depends on bathroom size
-- [ ] user cannot enter invalid values
-- [ ] user can choose between two tiles sets: 1x1 and 2x1; pattern for 2x1 tiles is brick-like
-- [ ] user can choose between two layouts for 2x1 tiles: brick-like and random (horizontally and vertically)
 - [x] user can access application by use of public URL
