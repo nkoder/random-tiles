@@ -2,7 +2,7 @@ describe('bathroomShape', function () {
 
     beforeEach(module('randomTiles'));
 
-    describe('BathroomShape', function () {
+    describe('BathroomShape should', function () {
 
         var BathroomShape;
 
@@ -10,7 +10,7 @@ describe('bathroomShape', function () {
             BathroomShape = _BathroomShape_;
         }));
 
-        it("should define bathroom main shape", function () {
+        it("define bathroom main shape", function () {
             // given:
 
             // when:
@@ -36,7 +36,7 @@ describe('bathroomShape', function () {
             expect(nextFrom(lines)).toEqual(lineFrom(0, 2565).to(0, 110));
         });
 
-        it("should define bathroom showe shape", function () {
+        it("define bathroom shape", function () {
             // given:
 
             // when:

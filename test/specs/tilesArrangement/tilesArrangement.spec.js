@@ -2,7 +2,7 @@ describe('tilesArrangement', function () {
 
     beforeEach(module('tilesArrangement'));
 
-    describe('TilesArrangementController', function () {
+    describe('TilesArrangementController should', function () {
 
         var $rootScope, $controller;
         var ArrangementGenerator;
@@ -18,7 +18,7 @@ describe('tilesArrangement', function () {
             createControllerWitchScopeAttached();
         });
 
-        it("should not generate arrangement on init", function () {
+        it("not generate arrangement on init", function () {
             // given:
 
             // when:
@@ -27,7 +27,7 @@ describe('tilesArrangement', function () {
             expect(scope.arrangement).not.toBeDefined();
         });
 
-        it("should generate arrangement", function () {
+        it("generate arrangement", function () {
             // given:
             const rows = 20;
             const columns = 11;
@@ -45,7 +45,7 @@ describe('tilesArrangement', function () {
             expect(scope.arrangement).toEqual("new arrangement");
         });
 
-        it("should not show tiles' labels by default", function () {
+        it("not show tiles' labels by default", function () {
             // given:
 
             // when:
@@ -54,7 +54,7 @@ describe('tilesArrangement', function () {
             expect(scope.shouldShowTilesLabels).toBe(false);
         });
 
-        it("should not start swapping tiles by default", function () {
+        it("not start swapping tiles by default", function () {
             // given:
 
             // when:
@@ -63,7 +63,7 @@ describe('tilesArrangement', function () {
             expect(scope.isSwappingTilesInProgress).toBeFalsy();
         });
 
-        it("should not start swapping tiles on new arrangement even if it was in progress before", function () {
+        it("not start swapping tiles on new arrangement even if it was in progress before", function () {
             // given:
             scope.isSwappingTilesInProgress = true;
 
@@ -87,7 +87,7 @@ describe('tilesArrangement', function () {
 
     });
 
-    describe('TilesArrangementDirective', function () {
+    describe('TilesArrangementDirective should', function () {
 
         var $compile;
         var scope;
@@ -97,7 +97,7 @@ describe('tilesArrangement', function () {
             scope = _$rootScope_.$new();
         }));
 
-        it("should be replaced by 'canvas' HTML element", function () {
+        it("be replaced by 'canvas' HTML element", function () {
             // given:
 
             // when:

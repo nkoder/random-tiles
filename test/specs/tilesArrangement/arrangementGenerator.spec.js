@@ -2,7 +2,7 @@ describe('tilesArrangement.arrangementGenerator', function () {
 
     beforeEach(module('tilesArrangement.arrangementGenerator'));
 
-    describe('ArrangementGenerator', function () {
+    describe('ArrangementGenerator should', function () {
 
         var ArrangementGenerator;
         var TilesProvider;
@@ -12,7 +12,7 @@ describe('tilesArrangement.arrangementGenerator', function () {
             TilesProvider = _TilesProvider_;
         }));
 
-        it("should generate new arrangement", function () {
+        it("generate new arrangement", function () {
             // given:
             const rows = 2;
             const columns = 3;
@@ -42,7 +42,7 @@ describe('tilesArrangement.arrangementGenerator', function () {
             expectCells(actualPositions).toContainSameElementsAs(positionsFor(rows, columns));
         });
 
-        it("should swap tiles", function () {
+        it("swap tiles", function () {
             // given:
             const rows = 3;
             const columns = 4;
@@ -58,7 +58,7 @@ describe('tilesArrangement.arrangementGenerator', function () {
             expect(tileIn(arrangement).at(3, 4).tile.name).toEqual("tile1");
         });
 
-        it("should swap tile with itself", function () {
+        it("swap tile with itself", function () {
             // given:
             const rows = 3;
             const columns = 4;
@@ -74,7 +74,7 @@ describe('tilesArrangement.arrangementGenerator', function () {
             expect(tileIn(arrangement).at(3, 4).tile.name).toEqual("tile2");
         });
 
-        it("should rotate tile when swapping with itself", function () {
+        it("rotate tile when swapping with itself", function () {
             // given:
             const rows = 1;
             const columns = 4;

@@ -2,17 +2,19 @@ describe('tilesProvider', function () {
 
     beforeEach(module('tilesProvider'));
 
-    describe('TilesProvider', function () {
+    describe('TilesProvider should', function () {
 
         var TilesProvider;
+        var Tiles;
 
-        beforeEach(inject(function (_TilesProvider_) {
+        beforeEach(inject(function (_TilesProvider_, _Tiles_) {
             TilesProvider = _TilesProvider_;
+            Tiles = _Tiles_;
         }));
 
-        it("should provide random tile", function () {
+        it("provide random tile", function () {
             // given:
-            TilesProvider.setTilesInTestWith([{
+            spyOn(Tiles, "tileFamilies").and.returnValue([{
                 familyName: "familyA",
                 types: [{
                     id: 1,
@@ -27,9 +29,9 @@ describe('tilesProvider', function () {
             expect(tile.name).toEqual("familyA-1");
         });
 
-        it("should remove used tiles", function () {
+        it("remove used tiles", function () {
             // given:
-            TilesProvider.setTilesInTestWith([{
+            spyOn(Tiles, "tileFamilies").and.returnValue([{
                 familyName: "familyA",
                 types: [{
                     id: 1,
@@ -47,7 +49,6 @@ describe('tilesProvider', function () {
             }]);
 
             // when:
-            console.log("START TEST");
             TilesProvider.randomTile();
             TilesProvider.randomTile();
             TilesProvider.randomTile();
