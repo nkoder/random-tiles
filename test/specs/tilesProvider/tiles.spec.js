@@ -11,16 +11,13 @@ describe('tilesProvider.tiles', function () {
         }));
 
         it("have proper structure", function () {
-            // given:
-            Tiles.initTiles();
-
             // when:
-            var tileFamilies = Tiles.tileFamilies();
+            var tilesByFamily = Tiles.byFamily();
 
             // then:
-            expect(tileFamilies[0].familyName).toBeDefined();
-            expect(tileFamilies[0].types[0].id).toBeDefined();
-            expect(tileFamilies[0].types[0].amount).toBeDefined();
+            expect(tilesByFamily[0].familyName).toBeDefined();
+            expect(tilesByFamily[0].types[0].id).toBeDefined();
+            expect(tilesByFamily[0].types[0].amount).toBeDefined();
         });
 
     });

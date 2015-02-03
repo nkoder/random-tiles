@@ -12,18 +12,19 @@ describe('tilesProvider', function () {
             Tiles = _Tiles_;
         }));
 
-        it("provide random tile", function () {
+        it("provide next random tile", function () {
             // given:
-            spyOn(Tiles, "tileFamilies").and.returnValue([{
+            providedTilesAre([{
                 familyName: "familyA",
                 types: [{
                     id: 1,
                     amount: 2
                 }]
             }]);
+            TilesProvider.reset();
 
             // when:
-            var tile = TilesProvider.randomTile();
+            var tile = TilesProvider.nextRandomTile();
 
             // then:
             expect(tile.name).toEqual("familyA-1");
@@ -31,7 +32,7 @@ describe('tilesProvider', function () {
 
         it("remove used tiles", function () {
             // given:
-            spyOn(Tiles, "tileFamilies").and.returnValue([{
+            providedTilesAre([{
                 familyName: "familyA",
                 types: [{
                     id: 1,
@@ -47,16 +48,46 @@ describe('tilesProvider', function () {
                     amount: 1
                 }]
             }]);
+            TilesProvider.reset();
 
             // when:
-            TilesProvider.randomTile();
-            TilesProvider.randomTile();
-            TilesProvider.randomTile();
-            TilesProvider.randomTile();
+            TilesProvider.nextRandomTile();
+            TilesProvider.nextRandomTile();
+            TilesProvider.nextRandomTile();
+            TilesProvider.nextRandomTile();
 
             // then:
-            expect(TilesProvider.randomTile().name).not.toBeDefined();
+            expect(TilesProvider.nextRandomTile().name).not.toBeDefined();
         });
+
+        it("use all available tiles again after reset", function () {
+            // given:
+            providedTilesAre([{
+                familyName: "familyA",
+                types: [{
+                    id: 1,
+                    amount: 1
+                }]
+            }]);
+            TilesProvider.reset();
+            TilesProvider.nextRandomTile();
+
+            // when:
+            TilesProvider.reset();
+
+            // then:
+            expect(TilesProvider.nextRandomTile().name).toEqual("familyA-1");
+        });
+
+        function providedTilesAre(tiles) {
+            spyOn(Tiles, "byFamily").and.callFake(function () {
+                return deepCopyOf(tiles);
+            });
+        }
+
+        function deepCopyOf(object) {
+            return JSON.parse(JSON.stringify(object))
+        }
 
     });
 });

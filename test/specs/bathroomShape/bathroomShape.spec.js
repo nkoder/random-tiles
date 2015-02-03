@@ -10,9 +10,7 @@ describe('bathroomShape', function () {
             BathroomShape = _BathroomShape_;
         }));
 
-        it("define bathroom main shape", function () {
-            // given:
-
+        it("define main shape of bathroom", function () {
             // when:
             var lines = BathroomShape.mainLines();
 
@@ -36,11 +34,9 @@ describe('bathroomShape', function () {
             expect(nextFrom(lines)).toEqual(lineFrom(0, 2565).to(0, 110));
         });
 
-        it("define bathroom shape", function () {
-            // given:
-
+        it("define shape of platfrom inside shower", function () {
             // when:
-            var lines = BathroomShape.showerLines();
+            var lines = BathroomShape.showerPlatformLines();
 
             // then:
             var nextFrom = new LinesIterator();

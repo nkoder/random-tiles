@@ -68,7 +68,7 @@ angular.module('bathroomShape', [])
             mainLines: function () {
                 return mainLines;
             },
-            showerLines: function () {
+            showerPlatformLines: function () {
                 return showerLines;
             }
         };

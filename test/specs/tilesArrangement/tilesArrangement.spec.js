@@ -15,14 +15,10 @@ describe('tilesArrangement', function () {
         }));
 
         beforeEach(function () {
-            createControllerWitchScopeAttached();
+            createControllerWitchAttachedScope();
         });
 
         it("not generate arrangement on init", function () {
-            // given:
-
-            // when:
-
             // then:
             expect(scope.arrangement).not.toBeDefined();
         });
@@ -46,19 +42,11 @@ describe('tilesArrangement', function () {
         });
 
         it("not show tiles' labels by default", function () {
-            // given:
-
-            // when:
-
             // then:
             expect(scope.shouldShowTilesLabels).toBe(false);
         });
 
         it("not start swapping tiles by default", function () {
-            // given:
-
-            // when:
-
             // then:
             expect(scope.isSwappingTilesInProgress).toBeFalsy();
         });
@@ -74,7 +62,7 @@ describe('tilesArrangement', function () {
             expect(scope.isSwappingTilesInProgress).toBeFalsy();
         });
 
-        function createControllerWitchScopeAttached() {
+        function createControllerWitchAttachedScope() {
             scope = $rootScope.$new();
             $controller('TilesArrangementController', {
                 $scope: scope
@@ -98,8 +86,6 @@ describe('tilesArrangement', function () {
         }));
 
         it("be replaced by 'canvas' HTML element", function () {
-            // given:
-
             // when:
             var element = compileDirective();
 

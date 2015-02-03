@@ -2,10 +2,8 @@ angular.module('tilesProvider.tiles', [])
 
     .factory('Tiles', function () {
 
-        var tileFamilies = [];
-
-        function initTiles() {
-            tileFamilies = [
+        function byFamily() {
+            return [
                 newTileFamily()
                     .withType(1).inAmountOf(5)
                     .withType(2).inAmountOf(8)
@@ -71,6 +69,7 @@ angular.module('tilesProvider.tiles', [])
             var tileFamily = {
                 types: []
             };
+
             return {
                 withType: function (typeId) {
                     recentlySpecifiedTypeId = typeId;
@@ -91,10 +90,7 @@ angular.module('tilesProvider.tiles', [])
         }
 
         return {
-            initTiles: initTiles,
-            tileFamilies: function () {
-                return tileFamilies;
-            }
+            byFamily: byFamily
         };
 
     });

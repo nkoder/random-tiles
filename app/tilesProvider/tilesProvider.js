@@ -2,38 +2,40 @@ angular.module('tilesProvider', ['tilesProvider.tiles'])
 
     .factory('TilesProvider', function (Tiles) {
 
-        function initTiles() {
-            Tiles.initTiles();
+        var tilesByFamily;
+
+        function reset() {
+            tilesByFamily = Tiles.byFamily();
         }
 
-        function randomTile() {
-            return new Tile();
+        function nextRandomTile() {
+            return new Tile(useNextAvailableName());
         }
 
-        function Tile() {
+        function Tile(name) {
             return {
-                name: useNextAvailableName()
+                name: name
             }
         }
 
         function useNextAvailableName() {
-            if (Tiles.tileFamilies().length === 0) {
+            if (tilesByFamily.length === 0) {
                 return undefined;
             }
-            var tileFamily = _.sample(Tiles.tileFamilies());
+            var tileFamily = _.sample(tilesByFamily);
             var tileType = _.sample(tileFamily.types);
             useOneTileOf(tileFamily.familyName, tileType.id);
             return tileFamily.familyName + "-" + tileType.id;
         }
 
         function useOneTileOf(usedFamilyName, usedTypeId) {
-            var family = _.find(Tiles.tileFamilies(), familyWithNameEqualTo(usedFamilyName));
+            var family = _.find(tilesByFamily, familyWithNameEqualTo(usedFamilyName));
             var type = _.find(family.types, typeWithIdEqualTo(usedTypeId));
             type.amount -= 1;
             if (type.amount <= 0) {
                 _.remove(family.types, typeWithIdEqualTo(usedTypeId));
                 if (_.isEmpty(family.types)) {
-                    _.remove(Tiles.tileFamilies(), familyWithNameEqualTo(usedFamilyName));
+                    _.remove(tilesByFamily, familyWithNameEqualTo(usedFamilyName));
                 }
             }
         }
@@ -51,8 +53,8 @@ angular.module('tilesProvider', ['tilesProvider.tiles'])
         }
 
         return {
-            initTiles: initTiles,
-            randomTile: randomTile
+            reset: reset,
+            nextRandomTile: nextRandomTile
         };
 
     });

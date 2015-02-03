@@ -140,7 +140,7 @@ angular.module('tilesArrangement', ['tilesArrangement.arrangementGenerator', 'ba
             context2d().strokeStyle = "#FF0000";
             context2d().lineWidth = 5;
             drawShape(BathroomShape.mainLines());
-            drawShape(BathroomShape.showerLines());
+            drawShape(BathroomShape.showerPlatformLines());
             context2d().closePath();
             context2d().stroke();
             context2d().restore();

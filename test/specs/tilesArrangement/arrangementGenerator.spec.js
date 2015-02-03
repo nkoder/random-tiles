@@ -19,14 +19,14 @@ describe('tilesArrangement.arrangementGenerator', function () {
             const tileInnerWidth = 4;
             const tileInnerHeight = 5;
             const groutWidth = 1;
-            spyOn(TilesProvider, "initTiles");
-            spyOn(TilesProvider, "randomTile").and.returnValue("random tile");
+            spyOn(TilesProvider, "reset");
+            spyOn(TilesProvider, "nextRandomTile").and.returnValue("random tile");
 
             // when:
             var arrangement = newArrangementFor(rows, columns, tileInnerWidth, tileInnerHeight, groutWidth);
 
             // then:
-            expect(TilesProvider.initTiles).toHaveBeenCalled();
+            expect(TilesProvider.reset).toHaveBeenCalled();
             var actualPositions = [];
             expect(arrangement.size.width).toBe(columns * (tileInnerWidth + groutWidth));
             expect(arrangement.size.height).toBe(rows * (tileInnerHeight + groutWidth));
@@ -98,8 +98,8 @@ describe('tilesArrangement.arrangementGenerator', function () {
         });
 
         function newArrangementFor(rows, columns, tileInnerWidth, tileInnerHeight, groutWidth) {
-            return ArrangementGenerator
-                .newArrangementFor(rows || 2, columns || 3, tileInnerWidth || 10, tileInnerHeight || 10, groutWidth || 1);
+            return ArrangementGenerator.newArrangementFor(rows || 2, columns || 3, tileInnerWidth || 10,
+                tileInnerHeight || 10, groutWidth || 1);
         }
 
         function expectCells(actual) {

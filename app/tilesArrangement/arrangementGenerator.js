@@ -2,19 +2,21 @@ angular.module('tilesArrangement.arrangementGenerator', ['tilesProvider'])
 
     .factory('ArrangementGenerator', function (TilesProvider) {
 
+        function newArrangementFor(rows, columns, tileWidth, tileHeight, groutWidth) {
+            TilesProvider.reset();
+            return new Arrangement(rows, columns, tileWidth, tileHeight, groutWidth);
+        }
+
         function Arrangement(rows, columns, tileWidth, tileHeight, groutWidth) {
-
             var arrangedTiles = [];
-
-            TilesProvider.initTiles();
-
             var leftPositions = positionsFor(rows, columns);
+
             while (!_.isEmpty(leftPositions)) {
                 var position = _.sample(leftPositions);
                 arrangedTiles.push({
                     position: position,
                     clockwiseRotations: _.random(1, 4),
-                    tile: TilesProvider.randomTile()
+                    tile: TilesProvider.nextRandomTile()
                 });
                 _.remove(leftPositions, position);
             }
@@ -72,9 +74,7 @@ angular.module('tilesArrangement.arrangementGenerator', ['tilesProvider'])
         }
 
         return {
-            newArrangementFor: function (rows, columns, tileWidth, tileHeight, groutWidth) {
-                return new Arrangement(rows, columns, tileWidth, tileHeight, groutWidth);
-            }
+            newArrangementFor: newArrangementFor
         }
 
     });
