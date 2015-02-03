@@ -1,8 +1,6 @@
-angular
-    .module('randomTiles')
-    .factory('ArrangementGenerator', function (_TilesProvider_) {
+angular.module('tilesArrangement.arrangementGenerator', ['tilesProvider'])
 
-        var TilesProvider = _TilesProvider_;
+    .factory('ArrangementGenerator', function (TilesProvider) {
 
         function Arrangement(rows, columns, tileWidth, tileHeight, groutWidth) {
 

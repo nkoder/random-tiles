@@ -1,5 +1,5 @@
-angular
-    .module('randomTiles')
+angular.module('tilesProvider', [])
+
     .factory('TilesProvider', function () {
 
         var tileFamilies = [];

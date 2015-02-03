@@ -1,10 +1,22 @@
-angular
-    .module('randomTiles')
-    .directive('tilesArrangement', function (_BathroomShape_) {
+angular.module('tilesArrangement', ['tilesArrangement.arrangementGenerator', 'bathroomShape'])
+
+    .controller('TilesArrangementController', function ($scope, ArrangementGenerator) {
+
+        $scope.shouldShowTilesLabels = false;
+        const rows = 20;
+        const columns = 11;
+
+        $scope.generateNextArrangement = function (tileWidth, tileHeight, groutWidth) {
+            $scope.isSwappingTilesInProgress = false;
+            $scope.arrangement =
+                ArrangementGenerator.newArrangementFor(rows, columns, tileWidth, tileHeight, groutWidth);
+        };
+
+    })
+
+    .directive('tilesArrangement', function (BathroomShape) {
 
         const scale = 0.5;
-
-        var BathroomShape = _BathroomShape_;
 
         var scope;
         var canvas;
@@ -192,5 +204,3 @@ angular
             link: link
         }
     });
-
-

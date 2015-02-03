@@ -1,5 +1,5 @@
-angular
-    .module('randomTiles')
+angular.module('bathroomShape', [])
+
     .factory('BathroomShape', function () {
 
         var mainLines = initMainLinesFrom(0, 110);
@@ -33,7 +33,7 @@ angular
                 coordinates.ofNextHorizontalLineOfLength(400),
                 coordinates.ofNextVerticalLineOfLength(800),
                 coordinates.ofNextHorizontalLineOfLength(-400),
-                coordinates.ofNextVerticalLineOfLength(-800),
+                coordinates.ofNextVerticalLineOfLength(-800)
             ];
         }
 
