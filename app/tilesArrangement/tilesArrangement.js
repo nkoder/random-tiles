@@ -1,4 +1,8 @@
-angular.module('tilesArrangement', ['tilesArrangement.arrangementGenerator', 'bathroomShape'])
+angular.module('tilesArrangement', [
+    'tilesArrangement.arrangementGenerator',
+    'tilesArrangement.arrangementPicture',
+    'bathroomShape'
+])
 
     .controller('TilesArrangementController', function ($scope, ArrangementGenerator) {
 
@@ -14,15 +18,14 @@ angular.module('tilesArrangement', ['tilesArrangement.arrangementGenerator', 'ba
 
     })
 
-    .directive('tilesArrangement', function (BathroomShape) {
+    .directive('tilesArrangement', function (ArrangementPictureCreator, BathroomShape) {
 
-        const scale = 0.5;
 
         var scope;
         var canvas;
         var arrangement;
+        var arrangementPicture;
         var sourceRowToSwap, sourceColumnToSwap;
-        var images, imagesLoaded, imagesToBeLoaded;
 
         function link(_scope_, _element_) {
             scope = _scope_;
@@ -33,8 +36,8 @@ angular.module('tilesArrangement', ['tilesArrangement.arrangementGenerator', 'ba
         }
 
         function toggleSwappingTiles(event) {
-            var column = columnAt(unscaled(event.offsetX));
-            var row = rowAt(unscaled(event.offsetY));
+            var column = arrangementPicture.columnAt(event.offsetX);
+            var row = arrangementPicture.rowAt(event.offsetY);
             if (!!scope.isSwappingTilesInProgress) {
                 stopSwappingTilesAt(row, column);
             } else {
@@ -59,64 +62,39 @@ angular.module('tilesArrangement', ['tilesArrangement.arrangementGenerator', 'ba
 
         function updateCanvas() {
             arrangement = scope.arrangement;
-            if (arrangement) {
+            arrangementPicture = ArrangementPictureCreator.newPictureFor(arrangement, BathroomShape);
+            if (!!arrangementPicture) {
                 resetCanvas();
                 loadImages();
             }
         }
 
         function resetCanvas() {
-            canvas.width = scaled(arrangement.size.width);
-            canvas.height = scaled(arrangement.size.height);
+            canvas.width = arrangementPicture.width();
+            canvas.height = arrangementPicture.height();
             context2d().fillStyle = "#FFFFFF";
             context2d().fillRect(0, 0, canvas.width, canvas.height);
         }
 
         function loadImages() {
-            images = [];
-            imagesLoaded = 0;
-            imagesToBeLoaded = 0;
-            arrangement.arrangedTiles.forEach(function (arrangedTile) {
-                var tileName = arrangedTile.tile.name;
-                if (tileName === undefined || images[tileName]) {
-                    return;
-                }
-                imagesToBeLoaded++;
-                var image = new Image();
-                image.src = "assets/img/" + tileName + ".jpg";
-                image.onload = function () {
-                    imagesLoaded++;
-                    if (imagesLoaded >= imagesToBeLoaded) {
-                        drawTiles();
-                        drawBathroomShape();
-                    }
-                };
-                images[tileName] = image;
+            arrangementPicture.loadImagesAndThen(function (images) {
+                drawTilesUsing(images);
+                drawBathroomShape();
             });
         }
 
-        function drawTiles() {
-            arrangement.arrangedTiles.forEach(function (arrangedTile) {
-                var tileName = arrangedTile.tile.name;
-                if (tileName) {
-                    drawTile(images[tileName], arrangedTile, arrangement.tileSize, arrangement.groutWidth);
+        function drawTilesUsing(images) {
+            arrangementPicture.forEachTile(function (tileName, x, y, width, height, rotation) {
+                var tileImage = images[tileName];
+                context2d().save();
+                context2d().translate(x + width / 2, y + height / 2);
+                context2d().rotate(rotation);
+                context2d().drawImage(tileImage, -width / 2, -height / 2, width, height);
+                context2d().restore();
+                if (shouldShowTilesLabels()) {
+                    drawTileLabel(tileName, x + 2, y + 2);
                 }
             });
-        }
-
-        function drawTile(tileImage, arrangedTile, tileSize, groutWidth) {
-            var x = (tileSize.width + groutWidth) * (arrangedTile.position.column - 1) + groutWidth;
-            var y = (tileSize.height + groutWidth) * (arrangedTile.position.row - 1) + groutWidth;
-            var width = tileSize.width;
-            var height = tileSize.height;
-            context2d().save();
-            context2d().translate(scaled(x + width / 2), scaled(y + height / 2));
-            context2d().rotate(arrangedTile.clockwiseRotations * 90 * (Math.PI / 180));
-            context2d().drawImage(tileImage, scaled(-width / 2), scaled(-height / 2), scaled(width), scaled(height));
-            context2d().restore();
-            if (shouldShowTilesLabels()) {
-                drawTileLabel(arrangedTile.tile.name, x + 2, y + 2);
-            }
         }
 
         function drawTileLabel(labelText, x, y) {
@@ -127,9 +105,9 @@ angular.module('tilesArrangement', ['tilesArrangement.arrangementGenerator', 'ba
             const width = context2d().measureText(labelText).width + textXOffset;
             const height = 16;
             context2d().fillStyle = "#FFFFFF";
-            context2d().fillRect(scaled(x), scaled(y), width, height);
+            context2d().fillRect(x, y, width, height);
             context2d().fillStyle = "#000000";
-            context2d().fillText(labelText, scaled(x) + textXOffset, scaled(y));
+            context2d().fillText(labelText, x + textXOffset, y);
             context2d().restore();
         }
 
@@ -139,31 +117,23 @@ angular.module('tilesArrangement', ['tilesArrangement.arrangementGenerator', 'ba
             context2d().beginPath();
             context2d().strokeStyle = "#FF0000";
             context2d().lineWidth = 5;
-            drawShape(BathroomShape.mainLines());
-            drawShape(BathroomShape.showerPlatformLines());
+            arrangementPicture.forEachLineInBathroomShape(drawLine);
             context2d().closePath();
             context2d().stroke();
             context2d().restore();
         }
 
-        function drawShape(lines) {
-            _.forEach(lines, function (line) {
-                context2d().moveTo(scaled(line.x1), scaled(line.y1));
-                context2d().lineTo(scaled(line.x2), scaled(line.y2));
-            });
+        function drawLine(line) {
+            context2d().moveTo(line.x1, line.y1);
+            context2d().lineTo(line.x2, line.y2);
         }
 
         function highlightTileAt(row, column) {
-            var tileSize = arrangement.tileSize;
-            var groutWidth = arrangement.groutWidth;
-            var x = (tileSize.width + groutWidth) * (column - 1) + groutWidth;
-            var y = (tileSize.height + groutWidth) * (row - 1) + groutWidth;
-            var width = tileSize.width;
-            var height = tileSize.height;
+            var rectangle = arrangementPicture.tileRectangleAt(row, column);
             context2d().save();
             context2d().globalAlpha = 0.4;
             context2d().fillStyle = "#999900";
-            context2d().fillRect(scaled(x), scaled(y), scaled(width), scaled(height));
+            context2d().fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
             context2d().restore();
         }
 
@@ -171,30 +141,8 @@ angular.module('tilesArrangement', ['tilesArrangement.arrangementGenerator', 'ba
             return canvas.getContext("2d");
         }
 
-        function scaled(dimension) {
-            return dimension * scale;
-        }
-
-        function unscaled(dimension) {
-            return dimension / scale;
-        }
-
         function shouldShowTilesLabels() {
             return scope.shouldShowTilesLabels;
-        }
-
-        function columnAt(x) {
-            if (arrangement) {
-                var columnWidth = arrangement.tileSize.width + arrangement.groutWidth;
-                return Math.floor(x / columnWidth) + 1;
-            }
-        }
-
-        function rowAt(y) {
-            if (arrangement) {
-                var rowHeight = arrangement.tileSize.height + arrangement.groutWidth;
-                return Math.floor(y / rowHeight) + 1;
-            }
         }
 
         return {
