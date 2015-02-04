@@ -18,9 +18,11 @@
 <div ng-controller="TilesArrangementController">
     <div>
         <form ng-submit="generateNextArrangement(198, 198, 2)">
-            <button type="submit" id="generate-arrangement">Generate!</button>
+            <button type="submit" id="generate-arrangement">Generate new arrangement</button>
         </form>
-        Show labels? <input id="labels-visibility" type="checkbox" ng-model="shouldShowTilesLabels"/>
+        <div>
+            <label><input id="labels-visibility" type="checkbox" ng-model="shouldShowTilesLabels"/>Show labels?</label>
+        </div>
     </div>
     <tiles-arrangement></tiles-arrangement>
 </div>
