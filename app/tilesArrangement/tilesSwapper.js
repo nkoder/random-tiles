@@ -42,10 +42,17 @@ angular.module('tilesArrangement.tilesSwapper', [])
             callbackOnSwapFinish = callback;
         }
 
+        function ifSwapIsInProgressThen(callback) {
+            if (!!scope.isSwappingTilesInProgress) {
+                callback(sourceCell);
+            }
+        }
+
         return {
             attachTo: attachTo,
             clickedTileIn: clickedTileIn,
             onSwapBegin: onSwapBegin,
-            onSwapFinish: onSwapFinish
+            onSwapFinish: onSwapFinish,
+            ifSwapIsInProgressThen: ifSwapIsInProgressThen
         }
     });

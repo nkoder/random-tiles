@@ -51,7 +51,7 @@ angular.module('tilesArrangement', [
             arrangementPicture = ArrangementPictureCreator.newPictureFor(arrangement, BathroomShape);
             if (!!arrangementPicture) {
                 resetCanvas();
-                drawArrangement();
+                drawArrangementAsynchronously();
             }
         }
 
@@ -62,10 +62,11 @@ angular.module('tilesArrangement', [
             context2d().fillRect(0, 0, canvas.width, canvas.height);
         }
 
-        function drawArrangement() {
+        function drawArrangementAsynchronously() {
             arrangementPicture.loadImagesAndThen(function (images) {
                 drawTilesUsing(images);
                 drawBathroomShape();
+                TilesSwapper.ifSwapIsInProgressThen(highlightTileIn);
             });
         }
 
