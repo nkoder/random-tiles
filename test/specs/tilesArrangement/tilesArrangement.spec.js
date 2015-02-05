@@ -5,14 +5,19 @@ describe('tilesArrangement', function () {
     describe('TilesArrangementController should', function () {
 
         var $rootScope, $controller;
-        var ArrangementGenerator;
+        var ArrangementGenerator, TilesSwapper;
         var scope;
 
-        beforeEach(inject(function (_$rootScope_, _$controller_, _ArrangementGenerator_) {
+        beforeEach(inject(function (_$rootScope_, _$controller_, _ArrangementGenerator_, _TilesSwapper_) {
             $rootScope = _$rootScope_;
             $controller = _$controller_;
             ArrangementGenerator = _ArrangementGenerator_;
+            TilesSwapper = _TilesSwapper_;
         }));
+
+        beforeEach(function () {
+            spyOn(TilesSwapper, "attachTo");
+        });
 
         beforeEach(function () {
             createControllerWitchAttachedScope();
@@ -60,6 +65,11 @@ describe('tilesArrangement', function () {
 
             // then:
             expect(scope.isSwappingTilesInProgress).toBeFalsy();
+        });
+
+        it("provide scope for TileSwapper", function () {
+            // then:
+            expect(TilesSwapper.attachTo).toHaveBeenCalledWith(scope);
         });
 
         function createControllerWitchAttachedScope() {

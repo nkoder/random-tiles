@@ -1,10 +1,11 @@
 angular.module('tilesArrangement', [
     'tilesArrangement.arrangementGenerator',
     'tilesArrangement.arrangementPicture',
+    'tilesArrangement.tilesSwapper',
     'bathroomShape'
 ])
 
-    .controller('TilesArrangementController', function ($scope, ArrangementGenerator) {
+    .controller('TilesArrangementController', function ($scope, ArrangementGenerator, TilesSwapper) {
 
         $scope.shouldShowTilesLabels = false;
         const rows = 20;
@@ -16,19 +17,20 @@ angular.module('tilesArrangement', [
                 ArrangementGenerator.newArrangementFor(rows, columns, tileWidth, tileHeight, groutWidth);
         };
 
+        TilesSwapper.attachTo($scope);
     })
 
-    .directive('tilesArrangement', function (ArrangementPictureCreator, BathroomShape) {
-
+    .directive('tilesArrangement', function (ArrangementPictureCreator, BathroomShape, TilesSwapper) {
 
         var scope;
         var canvas;
         var arrangement;
         var arrangementPicture;
-        var sourceRowToSwap, sourceColumnToSwap;
 
         function link(_scope_, _element_) {
             scope = _scope_;
+            TilesSwapper.onSwapBegin(highlightTileIn);
+            TilesSwapper.onSwapFinish(swapTilesBetween);
             _element_.on("click", toggleSwappingTiles);
             canvas = _element_[0];
             scope.$watch('arrangement', updateCanvas);
@@ -38,26 +40,10 @@ angular.module('tilesArrangement', [
         function toggleSwappingTiles(event) {
             var column = arrangementPicture.columnAt(event.offsetX);
             var row = arrangementPicture.rowAt(event.offsetY);
-            if (!!scope.isSwappingTilesInProgress) {
-                stopSwappingTilesAt(row, column);
-            } else {
-                startSwappingTilesAt(row, column);
-            }
-        }
-
-        function startSwappingTilesAt(row, column) {
-            scope.isSwappingTilesInProgress = true;
-            sourceRowToSwap = row;
-            sourceColumnToSwap = column;
-            highlightTileAt(row, column);
-        }
-
-        function stopSwappingTilesAt(row, column) {
-            scope.isSwappingTilesInProgress = false;
-            arrangement.swapTileAt(sourceRowToSwap, sourceColumnToSwap).withTileAt(row, column);
-            sourceRowToSwap = undefined;
-            sourceColumnToSwap = undefined;
-            updateCanvas();
+            TilesSwapper.clickedTileIn({
+                row: row,
+                column: column
+            });
         }
 
         function updateCanvas() {
@@ -65,7 +51,7 @@ angular.module('tilesArrangement', [
             arrangementPicture = ArrangementPictureCreator.newPictureFor(arrangement, BathroomShape);
             if (!!arrangementPicture) {
                 resetCanvas();
-                loadImages();
+                drawArrangement();
             }
         }
 
@@ -76,7 +62,7 @@ angular.module('tilesArrangement', [
             context2d().fillRect(0, 0, canvas.width, canvas.height);
         }
 
-        function loadImages() {
+        function drawArrangement() {
             arrangementPicture.loadImagesAndThen(function (images) {
                 drawTilesUsing(images);
                 drawBathroomShape();
@@ -128,13 +114,20 @@ angular.module('tilesArrangement', [
             context2d().lineTo(line.x2, line.y2);
         }
 
-        function highlightTileAt(row, column) {
-            var rectangle = arrangementPicture.tileRectangleAt(row, column);
+        function highlightTileIn(cell) {
+            var rectangle = arrangementPicture.tileRectangleAt(cell.row, cell.column);
             context2d().save();
             context2d().globalAlpha = 0.4;
             context2d().fillStyle = "#999900";
             context2d().fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
             context2d().restore();
+        }
+
+        function swapTilesBetween(sourceCell, targetCell) {
+            arrangement
+                .swapTileAt(sourceCell.row, sourceCell.column)
+                .withTileAt(targetCell.row, targetCell.column);
+            updateCanvas();
         }
 
         function context2d() {
