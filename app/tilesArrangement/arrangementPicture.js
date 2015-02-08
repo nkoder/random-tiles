@@ -26,22 +26,24 @@ angular.module('tilesArrangement.arrangementPicture', [
             }
 
             function loadImagesAndThen(callbackOnImagesLoaded) {
-                var images = [];
-                var imagesLoadedPromises = [];
+                ImageCache.loadImagesNamed(definedTilesNames()).then(function (namedImages) {
+                    var imagesByNames = [];
+                    namedImages.forEach(function (namedImage) {
+                        imagesByNames[namedImage.name] = namedImage.image;
+                    });
+                    callbackOnImagesLoaded(imagesByNames);
+                });
+            }
+
+            function definedTilesNames() {
+                var names = [];
                 arrangement.arrangedTiles.forEach(function (arrangedTile) {
                     var tileName = arrangedTile.tile.name;
-                    if (tileName === undefined || images[tileName]) {
-                        return;
+                    if (!!tileName) {
+                        names.push(tileName);
                     }
-                    var whenImageLoaded = ImageCache.loadImageNamed(tileName);
-                    whenImageLoaded.then(function (image) {
-                        images[tileName] = image;
-                    });
-                    imagesLoadedPromises.push(whenImageLoaded);
                 });
-                $q.all(imagesLoadedPromises).then(function () {
-                    callbackOnImagesLoaded(images);
-                });
+                return names;
             }
 
             function forEachTile(callback) {

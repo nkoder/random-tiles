@@ -1,6 +1,6 @@
 angular.module('imageCache', ['imageCache.imageLoader'])
 
-    .factory('ImageCache', function (ImageLoader) {
+    .factory('ImageCache', function (ImageLoader, $q) {
 
         var imagesLoadPromises = [];
 
@@ -9,6 +9,14 @@ angular.module('imageCache', ['imageCache.imageLoader'])
                 cachePromise(name, ImageLoader.loadJpgImageNamed(name));
             }
             return cachedPromise(name);
+        }
+
+        function loadImagesNamed(names) {
+            var promises = [];
+            names.forEach(function (name) {
+                promises.push(loadImageNamed(name));
+            });
+            return $q.all(promises);
         }
 
         function isPromiseNotCached(name) {
@@ -24,7 +32,8 @@ angular.module('imageCache', ['imageCache.imageLoader'])
         }
 
         return {
-            loadImageNamed: loadImageNamed
+            loadImageNamed: loadImageNamed,
+            loadImagesNamed: loadImagesNamed
         };
 
     });

@@ -2,12 +2,11 @@ angular.module('imageCache.imageLoader', [])
 
     .factory('ImageLoader', function ($q, $log) {
 
-
         function loadJpgImageNamed(name) {
             return $q(function (onImageLoaded) {
                 var image = newImageNamed(name);
                 image.onload = function () {
-                    onImageLoaded(image);
+                    onImageLoaded({image: image, name: name});
                 };
             });
         }
