@@ -1,8 +1,8 @@
-angular.module('tilesArrangement.arrangementPicture', [])
+angular.module('tilesArrangement.arrangementPicture', ['bathroomShape'])
 
-    .factory('ArrangementPictureCreator', function () {
+    .factory('ArrangementPictureCreator', function (BathroomShape) {
 
-        function ArrangementPicture(arrangement, BathroomShape) {
+        function ArrangementPicture(arrangement) {
 
             const scale = 0.5;
 
@@ -100,18 +100,18 @@ angular.module('tilesArrangement.arrangementPicture', [])
             return {
                 width: width,
                 height: height,
-                loadImagesAndThen: loadImagesAndThen,
-                forEachTile: forEachTile,
                 columnAt: columnAt,
                 rowAt: rowAt,
                 tileRectangleAt: tileRectangleAt,
+                loadImagesAndThen: loadImagesAndThen,
+                forEachTile: forEachTile,
                 forEachLineInBathroomShape: forEachLineInBathroomShape
             }
         }
 
         return {
-            newPictureFor: function newPictureFor(arrangement, BathroomShape) {
-                return !!arrangement ? new ArrangementPicture(arrangement, BathroomShape) : undefined;
+            newPictureOf: function (arrangement) {
+                return !!arrangement ? new ArrangementPicture(arrangement) : undefined;
             }
         }
     });

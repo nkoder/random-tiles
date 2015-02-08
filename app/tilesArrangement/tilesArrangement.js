@@ -20,7 +20,7 @@ angular.module('tilesArrangement', [
         TilesSwapper.attachTo($scope);
     })
 
-    .directive('tilesArrangement', function (ArrangementPictureCreator, BathroomShape, TilesSwapper) {
+    .directive('tilesArrangement', function (ArrangementPictureCreator, TilesSwapper) {
 
         var scope;
         var canvas;
@@ -48,7 +48,7 @@ angular.module('tilesArrangement', [
 
         function updateCanvas() {
             arrangement = scope.arrangement;
-            arrangementPicture = ArrangementPictureCreator.newPictureFor(arrangement, BathroomShape);
+            arrangementPicture = ArrangementPictureCreator.newPictureOf(arrangement);
             if (!!arrangementPicture) {
                 resetCanvas();
                 drawArrangementAsynchronously();
