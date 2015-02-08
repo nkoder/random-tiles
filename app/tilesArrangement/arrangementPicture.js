@@ -1,8 +1,11 @@
-angular.module('tilesArrangement.arrangementPicture', ['bathroomShape'])
+angular.module('tilesArrangement.arrangementPicture', [
+    'bathroomShape',
+    'imagesLoader'
+])
 
     .constant('SCALE', 0.5)
 
-    .factory('ArrangementPictureCreator', function (BathroomShape, SCALE) {
+    .factory('ArrangementPictureCreator', function (BathroomShape, SCALE, ImagesLoader) {
 
         function ArrangementPicture(arrangement) {
 
@@ -22,7 +25,7 @@ angular.module('tilesArrangement.arrangementPicture', ['bathroomShape'])
                 return scaled(arrangement.size.height);
             }
 
-            function loadImagesAndThen(callback) {
+            function loadImagesAndThen(callbackOnImagesLoaded) {
                 var images = [];
                 var imagesLoaded = 0;
                 var imagesToBeLoaded = 0;
@@ -32,15 +35,13 @@ angular.module('tilesArrangement.arrangementPicture', ['bathroomShape'])
                         return;
                     }
                     imagesToBeLoaded++;
-                    var image = new Image();
-                    image.src = "assets/img/" + tileName + ".jpg";
-                    image.onload = function () {
+                    ImagesLoader.loadJpgImageNamed(tileName, function (image) {
+                        images[tileName] = image;
                         imagesLoaded++;
                         if (imagesLoaded >= imagesToBeLoaded) {
-                            callback(images);
+                            callbackOnImagesLoaded(images);
                         }
-                    };
-                    images[tileName] = image;
+                    });
                 });
             }
 
