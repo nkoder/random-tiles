@@ -54,14 +54,59 @@ describe('tilesArrangement.arrangementPicture', function () {
             ArrangementGenerator = _ArrangementGenerator_;
         }));
 
-        it("return scaled size of arrangement", function () {
+        it("provide scaled size of arrangement", function () {
             // given:
             var arrangement = newArrangementFor(rows, columns, tileWidth, tileHeight, groutWidth);
             var picture = ArrangementPictureCreator.newPictureOf(arrangement);
 
             // then:
-            expect(picture.width()).toBe(scale * (columns * (tileWidth + groutWidth)));
-            expect(picture.height()).toBe(scale * (rows * (tileHeight + groutWidth)));
+            expect(picture.width()).toEqual(scale * (columns * (tileWidth + groutWidth)));
+            expect(picture.height()).toEqual(scale * (rows * (tileHeight + groutWidth)));
+        });
+
+        it("provide cell at given coordinates", function () {
+            // given:
+            var arrangement = newArrangementFor(rows, columns, tileWidth, tileHeight, groutWidth);
+            var picture = ArrangementPictureCreator.newPictureOf(arrangement);
+            var cellWidth = tileWidth + groutWidth;
+            var cellHeight = tileHeight + groutWidth;
+
+            // then:
+            expect(picture.cellAt(scale * cellWidth * 0.5, scale * cellHeight * 0.5))
+                .toEqual({row: 1, column: 1});
+            expect(picture.cellAt(scale * cellWidth * 1.5, scale * cellHeight * 0.5))
+                .toEqual({row: 1, column: 2});
+            expect(picture.cellAt(scale * cellWidth * 0.5, scale * cellHeight * 1.5))
+                .toEqual({row: 2, column: 1});
+        });
+
+        it("provide rectangle coordinates in given cell", function () {
+            // given:
+            var arrangement = newArrangementFor(rows, columns, tileWidth, tileHeight, groutWidth);
+            var picture = ArrangementPictureCreator.newPictureOf(arrangement);
+
+            // then:
+            expect(picture.rectangleIn({row: 1, column: 1}))
+                .toEqual({
+                    x: scale * groutWidth,
+                    y: scale * groutWidth,
+                    width: scale * tileWidth,
+                    height: scale * tileHeight
+                });
+            expect(picture.rectangleIn({row: 2, column: 1}))
+                .toEqual({
+                    x: scale * groutWidth,
+                    y: scale * (tileHeight + 2 * groutWidth),
+                    width: scale * tileWidth,
+                    height: scale * tileHeight
+                });
+            expect(picture.rectangleIn({row: 1, column: 2}))
+                .toEqual({
+                    x: scale * (tileWidth + 2 * groutWidth),
+                    y: scale * groutWidth,
+                    width: scale * tileWidth,
+                    height: scale * tileHeight
+                });
         });
 
         function newArrangementFor(rows, columns, tileInnerWidth, tileInnerHeight, groutWidth) {

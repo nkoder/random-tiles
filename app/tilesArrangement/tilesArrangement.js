@@ -38,12 +38,8 @@ angular.module('tilesArrangement', [
         }
 
         function toggleSwappingTiles(event) {
-            var column = arrangementPicture.columnAt(event.offsetX);
-            var row = arrangementPicture.rowAt(event.offsetY);
-            TilesSwapper.clickedTileIn({
-                row: row,
-                column: column
-            });
+            var cell = arrangementPicture.cellAt(event.offsetX, event.offsetY);
+            TilesSwapper.clickedTileIn(cell);
         }
 
         function updateCanvas() {
@@ -116,7 +112,7 @@ angular.module('tilesArrangement', [
         }
 
         function highlightTileIn(cell) {
-            var rectangle = arrangementPicture.tileRectangleAt(cell.row, cell.column);
+            var rectangle = arrangementPicture.rectangleIn(cell);
             context2d().save();
             context2d().globalAlpha = 0.4;
             context2d().fillStyle = "#999900";

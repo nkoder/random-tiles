@@ -1,17 +1,17 @@
 angular.module('tilesArrangement.arrangementPicture', ['bathroomShape'])
 
-    .factory('ArrangementPictureCreator', function (BathroomShape) {
+    .constant('SCALE', 0.5)
+
+    .factory('ArrangementPictureCreator', function (BathroomShape, SCALE) {
 
         function ArrangementPicture(arrangement) {
 
-            const scale = 0.5;
-
             function scaled(dimension) {
-                return dimension * scale;
+                return dimension * SCALE;
             }
 
             function unscaled(dimension) {
-                return dimension / scale;
+                return dimension / SCALE;
             }
 
             function width() {
@@ -58,28 +58,23 @@ angular.module('tilesArrangement.arrangementPicture', ['bathroomShape'])
                 });
             }
 
-            function columnAt(x) {
+            function cellAt(x, y) {
                 x = unscaled(x);
-                if (!!arrangement) {
-                    var columnWidth = arrangement.tileSize.width + arrangement.groutWidth;
-                    return Math.floor(x / columnWidth) + 1;
-                }
-            }
-
-            function rowAt(y) {
                 y = unscaled(y);
-                if (!!arrangement) {
-                    var rowHeight = arrangement.tileSize.height + arrangement.groutWidth;
-                    return Math.floor(y / rowHeight) + 1;
+                var cellWidth = arrangement.tileSize.width + arrangement.groutWidth;
+                var cellHeight = arrangement.tileSize.height + arrangement.groutWidth;
+                return {
+                    row: Math.floor(y / cellHeight) + 1,
+                    column: Math.floor(x / cellWidth) + 1
                 }
             }
 
-            function tileRectangleAt(row, column) {
+            function rectangleIn(cell) {
                 var tileSize = arrangement.tileSize;
                 var groutWidth = arrangement.groutWidth;
                 return {
-                    x: scaled((tileSize.width + groutWidth) * (column - 1) + groutWidth),
-                    y: scaled((tileSize.height + groutWidth) * (row - 1) + groutWidth),
+                    x: scaled((tileSize.width + groutWidth) * (cell.column - 1) + groutWidth),
+                    y: scaled((tileSize.height + groutWidth) * (cell.row - 1) + groutWidth),
                     width: scaled(tileSize.width),
                     height: scaled(tileSize.height)
                 }
@@ -100,9 +95,8 @@ angular.module('tilesArrangement.arrangementPicture', ['bathroomShape'])
             return {
                 width: width,
                 height: height,
-                columnAt: columnAt,
-                rowAt: rowAt,
-                tileRectangleAt: tileRectangleAt,
+                cellAt: cellAt,
+                rectangleIn: rectangleIn,
                 loadImagesAndThen: loadImagesAndThen,
                 forEachTile: forEachTile,
                 forEachLineInBathroomShape: forEachLineInBathroomShape
