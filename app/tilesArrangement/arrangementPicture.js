@@ -35,7 +35,7 @@ angular.module('tilesArrangement.arrangementPicture', [
                         return;
                     }
                     imagesToBeLoaded++;
-                    ImagesLoader.loadJpgImageNamed(tileName, function (image) {
+                    ImagesLoader.loadJpgImageNamed(tileName).then(function (image) {
                         images[tileName] = image;
                         imagesLoaded++;
                         if (imagesLoaded >= imagesToBeLoaded) {

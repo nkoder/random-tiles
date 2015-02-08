@@ -1,17 +1,19 @@
 angular.module('imagesLoader', [])
 
-    .factory('ImagesLoader', function () {
+    .factory('ImagesLoader', function ($q) {
 
-        function loadJpgImage(name, callback) {
+        function loadJpgImageNamed(name) {
             var image = new Image();
             image.src = "assets/img/" + name + ".jpg";
-            image.onload = function () {
-                callback(image);
-            }
+            return $q(function (onLoaded) {
+                image.onload = function () {
+                    onLoaded(image);
+                }
+            });
         }
 
         return {
-            loadJpgImageNamed: loadJpgImage
+            loadJpgImageNamed: loadJpgImageNamed
         };
 
     });
