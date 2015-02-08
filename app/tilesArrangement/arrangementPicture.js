@@ -1,11 +1,11 @@
 angular.module('tilesArrangement.arrangementPicture', [
     'bathroomShape',
-    'imagesLoader'
+    'imageCache'
 ])
 
     .constant('SCALE', 0.5)
 
-    .factory('ArrangementPictureCreator', function (BathroomShape, SCALE, ImagesLoader, $q) {
+    .factory('ArrangementPictureCreator', function (BathroomShape, SCALE, ImageCache, $q) {
 
         function ArrangementPicture(arrangement) {
 
@@ -33,7 +33,7 @@ angular.module('tilesArrangement.arrangementPicture', [
                     if (tileName === undefined || images[tileName]) {
                         return;
                     }
-                    var whenImageLoaded = ImagesLoader.loadJpgImageNamed(tileName);
+                    var whenImageLoaded = ImageCache.loadImageNamed(tileName);
                     whenImageLoaded.then(function (image) {
                         images[tileName] = image;
                     });
