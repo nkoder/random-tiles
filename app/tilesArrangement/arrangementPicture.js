@@ -5,7 +5,7 @@ angular.module('tilesArrangement.arrangementPicture', [
 
     .constant('SCALE', 0.5)
 
-    .factory('ArrangementPictureCreator', function (BathroomShape, SCALE, ImagesLoader) {
+    .factory('ArrangementPictureCreator', function (BathroomShape, SCALE, ImagesLoader, $q) {
 
         function ArrangementPicture(arrangement) {
 
@@ -27,21 +27,20 @@ angular.module('tilesArrangement.arrangementPicture', [
 
             function loadImagesAndThen(callbackOnImagesLoaded) {
                 var images = [];
-                var imagesLoaded = 0;
-                var imagesToBeLoaded = 0;
+                var imagesLoadedPromises = [];
                 arrangement.arrangedTiles.forEach(function (arrangedTile) {
                     var tileName = arrangedTile.tile.name;
                     if (tileName === undefined || images[tileName]) {
                         return;
                     }
-                    imagesToBeLoaded++;
-                    ImagesLoader.loadJpgImageNamed(tileName).then(function (image) {
+                    var whenImageLoaded = ImagesLoader.loadJpgImageNamed(tileName);
+                    whenImageLoaded.then(function (image) {
                         images[tileName] = image;
-                        imagesLoaded++;
-                        if (imagesLoaded >= imagesToBeLoaded) {
-                            callbackOnImagesLoaded(images);
-                        }
                     });
+                    imagesLoadedPromises.push(whenImageLoaded);
+                });
+                $q.all(imagesLoadedPromises).then(function () {
+                    callbackOnImagesLoaded(images);
                 });
             }
 
@@ -49,8 +48,12 @@ angular.module('tilesArrangement.arrangementPicture', [
                 arrangement.arrangedTiles.forEach(function (arrangedTile) {
                     var tileName = arrangedTile.tile.name;
                     if (!!tileName) {
-                        var x = scaled((arrangement.tileSize.width + arrangement.groutWidth) * (arrangedTile.position.column - 1) + arrangement.groutWidth);
-                        var y = scaled((arrangement.tileSize.height + arrangement.groutWidth) * (arrangedTile.position.row - 1) + arrangement.groutWidth);
+                        var x = scaled(
+                            (arrangement.tileSize.width + arrangement.groutWidth) * (arrangedTile.position.column - 1)
+                            + arrangement.groutWidth);
+                        var y = scaled(
+                            (arrangement.tileSize.height + arrangement.groutWidth) * (arrangedTile.position.row - 1)
+                            + arrangement.groutWidth);
                         var width = scaled(arrangement.tileSize.width);
                         var height = scaled(arrangement.tileSize.height);
                         var rotation = arrangedTile.clockwiseRotations * 90 * (Math.PI / 180);
