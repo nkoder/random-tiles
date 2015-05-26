@@ -1,6 +1,8 @@
 random-tiles
 ============
 
+Category: **learning - AngularJS**
+
 A web application helping me with floor tiles arrangement in my new living place.
 
 Build status
