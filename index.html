@@ -21,12 +21,24 @@
 
 <div ng-controller="TilesArrangementController">
     <div>
+        <p>To <strong>swap tiles</strong> click on one tile (will become highlighted), then on another one.
+            Blank fields are selectable too.
+        </p>
+
+        <p>To <strong>rotate tile</strong> click on one tile (will become highlighted), then on the same tile.
+            It makes sense for 'piksele-1' and 'maziaje-1' tiles only.
+        </p>
+
+        <p>Red lines are indicating borders of a bathroom area.
+            Main area is a bathroom connected with a part of a halway.
+            Small area is a floor part under a shower.
+        </p>
+    </div>
+    <div>
         <form ng-submit="generateNextArrangement(198, 198, 2)">
             <button type="submit" id="generate-arrangement">Generate new arrangement</button>
         </form>
-        <div>
-            <label><input id="labels-visibility" type="checkbox" ng-model="shouldShowTilesLabels"/>Show labels?</label>
-        </div>
+        <label><input id="labels-visibility" type="checkbox" ng-model="shouldShowTilesLabels"/>Show labels?</label>
     </div>
     <tiles-arrangement></tiles-arrangement>
 </div>
