@@ -5,6 +5,8 @@ Category: **learning - AngularJS**
 
 A web application helping me with floor tiles arrangement in my new living place.
 
+You can try it on [http://nkoder.github.io/random-tiles/]()
+
 Build status
 ------------
 
