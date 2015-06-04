@@ -18,7 +18,7 @@
     "karma": "^0.12.31",
     "karma-jasmine": "^0.3.4",
     "karma-phantomjs-launcher": "^0.1.4",
-    "protractor": "^1.5.0"
+    "protractor": "^1.6.1"
   },
   "scripts": {
     "postinstall": "./node_modules/.bin/webdriver-manager update && ./node_modules/.bin/bower install && ./node_modules/.bin/grunt bower",

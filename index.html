@@ -5,26 +5,40 @@
     <title>Random Tiles</title>
     <script type="text/javascript" src="app/lib/angular.js"></script>
     <script type="text/javascript" src="app/lib/dist/lodash.compat.js"></script>
-    <script type="text/javascript" src="app/RandomTiles.module.js"></script>
-    <script type="text/javascript" src="app/BathroomShape.js"></script>
-    <script type="text/javascript" src="app/TilesProvider.js"></script>
-    <script type="text/javascript" src="app/ArrangementGenerator.js"></script>
-    <script type="text/javascript" src="app/TilesArrangementController.js"></script>
-    <script type="text/javascript" src="app/TilesArrangementDirective.js"></script>
+    <script type="text/javascript" src="app/bathroomShape/bathroomShape.js"></script>
+    <script type="text/javascript" src="app/tilesProvider/tiles.js"></script>
+    <script type="text/javascript" src="app/tilesProvider/tilesProvider.js"></script>
+    <script type="text/javascript" src="app/imageCache/imageLoader.js"></script>
+    <script type="text/javascript" src="app/imageCache/imageCache.js"></script>
+    <script type="text/javascript" src="app/tilesArrangement/arrangementPicture.js"></script>
+    <script type="text/javascript" src="app/tilesArrangement/arrangementGenerator.js"></script>
+    <script type="text/javascript" src="app/tilesArrangement/tilesSwapper.js"></script>
+    <script type="text/javascript" src="app/tilesArrangement/tilesArrangement.js"></script>
+    <script type="text/javascript" src="app/randomTiles.js"></script>
     <link rel="stylesheet" href="assets/styles/randomTiles.css"/>
 </head>
 <body ng-app="randomTiles">
 
 <div ng-controller="TilesArrangementController">
     <div>
-        <p>Remember that 2 'maziaje-1' tiles are slightly damaged on one side.</p>
+        <p>To <strong>swap tiles</strong> click on one tile (will become highlighted), then on another one.
+            Blank fields are selectable too.
+        </p>
+
+        <p>To <strong>rotate tile</strong> click on one tile (will become highlighted), then on the same tile.
+            It makes sense for 'piksele-1' and 'maziaje-1' tiles only.
+        </p>
+
+        <p>Red lines are indicating borders of a bathroom area.
+            Main area is a bathroom connected with a part of a halway.
+            Small area is a floor part under a shower.
+        </p>
+    </div>
+    <div>
         <form ng-submit="generateNextArrangement(198, 198, 2)">
-            Rows: <input type="text" id="rows-count" ng-model="rows"/>
-            Columns: <input type="text" id="columns-count" ng-model="columns"/>
-            <br/>
-            <button type="submit" id="generate-arrangement">Generate!</button>
+            <button type="submit" id="generate-arrangement">Generate new arrangement</button>
         </form>
-        Show labels? <input id="labels-visibility" type="checkbox" ng-model="shouldShowTilesLabels"/>
+        <label><input id="labels-visibility" type="checkbox" ng-model="shouldShowTilesLabels"/>Show labels?</label>
     </div>
     <tiles-arrangement></tiles-arrangement>
 </div>
